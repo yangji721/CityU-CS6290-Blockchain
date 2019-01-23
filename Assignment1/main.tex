@@ -1,0 +1,125 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{enumerate}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{CS6290: Reading Summary}
+
+\author{\IEEEauthorblockN{Ji Yang}
+\IEEEauthorblockA{ID:\ 56064832 \\
+yangji@comp.hkbu.edu.hk \\
+Dept.\ of Computer Science}
+}
+
+\maketitle
+
+\section{Summary of Paper\cite{bonneau2015sok}}
+
+\subsection{Problem Statement}
+In recent years, blockchain technologies have gained considerable attention across the whole world due to the huge success of bitcoin. 
+%
+Apart from its potential effects on industry transformation, bitcoin, as a decentralized platform, also catches great attention from the academia.
+%
+In this trend, this paper\cite{bonneau2015sok} targets on concluding research perspectives and challenges in bitcoin from masses of scattered literatures on the Internet.
+%
+Through surveying the state of the art in bitcoin and its related cryptocurrencies, this paper tries to render us detailed insights from the perspectives of system structure, security analysis, privacy issues and system compatibility.
+
+\subsection{Problem Significance}
+It is a great challenge to capture core techniques well in cryptocurrencies due to their rapidly appearing techniques and applications.
+%
+What's more, how to analyze the major issues and propose possible research directions in a reasonable manner also remains a puzzle.
+
+
+\subsection{State of the Art}
+In this section, I summarize this paper from the following perspectives: system structure and workflow, security analysis, privacy issues and system compatibility.
+
+\subsubsection{System Structure and Workflow}
+In the decentralized bitcoin system, the key problems are twofold. 
+%
+One problem is how to ensure the security of public transactions since there is no centralized infrastructure like bank.
+%
+The other problem lies in how to design an efficient consensus protocol that can incentivize all users to behave honestly.
+
+In a technical sense, some classical cryptography tools like hash function and digital signature are employed in bitcoin network.
+%
+For example, SHA-256 plays a role of message digests to ensure the integrity of data structures in bitcoin.
+%
+And users can apply Elliptic Curve Digital Signature Algorithm (ECDSA) to construct digital signatures with their private and public keys.
+%
+The whole bitcoin can be seen as a public, distributed and immutable ledger attached with all valid transactions.
+%
+This ledger, which is constructed as a sequence of blocks by miners, contains the following four components:
+(i) Hash value of the previous block which ensures the integrity previous block; 
+(ii) Timestamp; 
+(iii) Consensus-proof nonce which guarantees the validity of each block;  
+(iv) Merkle hash tree which aggregates the inner-block transactions efficiently.
+
+In order to address coordination problems, bitcoin adopts a consensus mechanism called proof-of-work.
+%
+In this setting, miners can append a new block on the longest chain by solving a computational puzzle.
+%
+Therefore, simple exhaustive search reduces all possible competitiveness into computational power which needs ideal hardware and expensive electricity.
+%
+And miners are also incentivized to behave honestly by using monetary rewards which includes block rewards and transaction fees.
+%
+It is nothing worthy that the difficulty of new block generation is adjusted every 2016 blocks for the purpose of avoiding frequent forks.
+
+
+
+\subsubsection{Security Analysis}
+
+\subsubsection{Privacy Issues}
+
+\subsubsection{System Compatibility}
+
+
+\subsection{Contributions}
+Guidelines: Here you should summarize the contributions of the paper in your own words.
+%
+For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+
+\subsection{Remaining Questions}
+Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+
+\section{Summary of Paper\cite{bonneau2015sok}}
+
+\subsection{Problem Statement}
+Guidelines: Here you should explicitly summarize the problem targeted by the paper. A rough and brief example might be as follows.
+%
+The paper targets the problem of searching encrypted outsourced data on the cloud.
+%
+Particularly, how to enable a client to perform search and get the correct search result when both the cloud database and query keywords are encrypted?
+
+\subsection{Problem Significance}
+Guidelines: Here you should explain why the problem targeted by the paper is important and has value.
+%
+In particular, what is the motivation of this paper?
+
+
+\subsection{State of the Art}
+
+Guidelines: Here you should describe the state of the art as reflected in the paper at that time.
+%
+
+
+
+\subsection{Contributions}
+Guidelines: Here you should summarize the contributions of the paper in your own words.
+%
+For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+
+\subsection{Remaining Questions}
+Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+
+\end{document}
