@@ -29,7 +29,7 @@ Apart from its potential effects on industry transformation, bitcoin, as a decen
 %
 In this trend, this paper\cite{bonneau2015sok} targets on concluding research perspectives and challenges in bitcoin from masses of scattered literatures on the Internet.
 %
-Through surveying the state of the art in bitcoin and its related cryptocurrencies, this paper tries to render us detailed insights from the perspectives of system structure, security analysis, privacy issues and system compatibility.
+Through surveying the state of the art in bitcoin and its related cryptocurrencies, this paper tries to render us detailed insights from the perspectives of system structure and workflow, security analysis, privacy issues and system compatibility in bitcoin.
 
 \subsection{Problem Significance}
 It is a great challenge to capture core techniques well in cryptocurrencies due to their rapidly appearing techniques and applications.
@@ -43,7 +43,7 @@ In this section, I summarize this paper from the following perspectives: system 
 \subsubsection{System Structure and Workflow}
 In the decentralized bitcoin system, the key problems are twofold. 
 %
-One problem is how to ensure the security of public transactions since there is no centralized infrastructure like bank.
+One problem is how to ensure the security of public transactions since there is no centralized infrastructure like bank which can maintain the transactions service.
 %
 The other problem lies in how to design an efficient consensus protocol that can incentivize all users to behave honestly.
 
@@ -51,7 +51,7 @@ In a technical sense, some classical cryptography tools like hash function and d
 %
 For example, SHA-256 plays a role of message digests to ensure the integrity of data structures in bitcoin.
 %
-And users can apply Elliptic Curve Digital Signature Algorithm (ECDSA) to construct digital signatures with their private and public keys.
+And users can apply Elliptic Curve Digital Signature Algorithm (ECDSA)\cite{johnson2001elliptic} to construct digital signatures with their private and public keys.
 %
 The whole bitcoin can be seen as a public, distributed and immutable ledger attached with all valid transactions.
 %
@@ -71,22 +71,75 @@ And miners are also incentivized to behave honestly by using monetary rewards wh
 %
 It is nothing worthy that the difficulty of new block generation is adjusted every 2016 blocks for the purpose of avoiding frequent forks.
 
-
-
 \subsubsection{Security Analysis}
+Since the security and stability of bitcoin is just proved empirically in most cases, it remains an unknown question whether it can defense against all possible novel attacks.
+%
+In this paper, some notions of stability and security are proposed for each component of bitcoin. Here, I try to refine the argument further and state my own understanding in details.
+
+First, considering bitcoin is facto, decentralized, ad hoc peer-to-peer network, some security mechanisms must be deployed in the node and network level against various attacks like delay attack, cyber-attack and denial-of-service attack (DoS).
+%
+Therefore, bitcoin is designed as a well-connected random network with low latency for ease of rapid message diffusion. 
+%
+What's more, in each node level, the security mechanism will execute a screening process to refuse to accept invalid transactions like double-spending transactions.
+
+Stability of the consensus algorithms is a more subtle problem in bitcoin.
+%
+All the existing analyses are based on a strong assumption that all miners will follow prescribed incentive mechanism.
+%
+However the realistic situation might be more complex and hard to balance perfectly.
+%
+There exists many possible problems, such as excessive power of a majority miner and collusion among smaller miners.
+%
+For example, in January 2019 the ethereum\cite{wood2014ethereum} suffered from a majority attack which was once deemed impossible.
+%
+By renting a great quantity of external computational power, attackers stole around 16 million worth of Ethereum and ERC20 tokens in this shrinking network.
 
 \subsubsection{Privacy Issues}
+In terms of users' privacy, sensitive transactions should be protected with an access control layer. 
+%
+However, bitcoin only provides a limited form of unlinkability.
+%
+By applying transactions graph analysis, adversaries can still link transactions to some specific users.
+%
+Even worse, all these transactions are transparent and anyone can access them.
+%
+Therefore, many blockchains are designated to realize this privacy issue. 
+%
+Zerocoin\cite{miers2013zerocoin} is the first blockchain which can provide unlinkability of transactions which also has it special coin called zerocoin.
+%
+Zerocash\cite{sasson2014zerocash} inherits many advantages in bitcoin and improves its efficiency further by refining underlying cryptographic operations.
+
 
 \subsubsection{System Compatibility}
+This section mainly involves existing and conceivable schemes of implementing changes in bitcoin.
+%
+In the communication network, a soft-fork change is preferred due to its backward compatibility with existing clients.
+%
+But sometimes, it is also essential for bitcoin developers to adopt hard-fork measurements to fill severe security gaps.
+%
+For instance, an anonymous hacker utilized a loophole in the coding to steal 3.6 million Ether in just few hours. 
+%
+As a urgent remedy action, the Ethereum community almost unanimously agreed to implement hard-fork. 
+%
+In addition, alternative consensus algorithms including system parameters and computational puzzles (e.g. PoS\cite{king2012ppcoin}, PoA\cite{gunnam2008next}, Threshold delay\cite{Dfinity}, PoB\cite{Slimcoin}) are merging constantly.  
 
 
 \subsection{Contributions}
-Guidelines: Here you should summarize the contributions of the paper in your own words.
+This survey introduces the primary technologies and possible future directions and provides an extensive analysis of each component in bitcoin. 
 %
-For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+In general, it collects masses of scattered materials and arrange them in an innovative and reasonable manner. 
 
 \subsection{Remaining Questions}
-Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+This survey focuses on the public blockchain like bitcoin and zerocoin. 
+%
+Since blockchain is a hot filed in both academia and industry, the survey could be outdated easily.
+%
+Nowadays, private blockchain like Hyperledger\cite{androulaki2018hyperledger} adopts a deterministic protocol to ensure stability of whole system.
+%
+And many financial institutions consider it as a promising tool to realize an access control mechanism.
+
+
+
 
 \section{Summary of Paper\cite{bonneau2015sok}}
 
