@@ -20,6 +20,84 @@ Dept.\ of Computer Science}
 
 \maketitle
 
+\section{Summary of Paper\cite{cryptobook}}
+
+\subsection{Background}
+In the first two chapters of this book\cite{cryptobook}, the authors introduce the bitcoin system structure and its workflow preliminarily.
+%
+And to make these concepts more understandable, they also explain some basic concepts in details.
+%
+Glossing over some technical details in implementation, I will conclude these two chapters on two aspects of rudimentary concepts and system structure.
+
+\subsection{Rudimentary Concepts}
+\subsubsection{Cryptographic Hash Functions}
+A cryptographic hash function $H(\cdot)$ is a mathematical function which accepts an arbitrary-length string as its input and produces a fixed-length bit string.
+%
+Hash function has the following three properties:
+
+\begin{enumerate}[(i)]
+    \item \textbf{Collision-resistance} It is infeasible to find two different inputs $m_{1}$, $m_{2}$ such that $H(m_1) = H(m_2)$.
+    \item \textbf{Hiding} Given $H(m)$, there exists no efficient algorithms that can find its original input $m$.
+    \item \textbf{Puzzle-friendly} Given a uniformly chosen-random k, it is computationally infeasible to find x such that $H(k \mid x) = y$ 
+\end{enumerate}
+
+Bitcoin developers adopted SHA-256 to construct other complicated data structures. Its compression feature could save data space efficiently.
+
+\subsubsection{Merkle Hash Tree\cite{merkle1989certified}}
+A Merkle Hash Tree (MHT) is a hierarchical data structure which could be used to authenticate a set of data objects with logarithmic time complexity.
+%
+Each leaf node contains a hash digest of a data record and each non-leaf node is assigned a hash digest from its child nodes.
+%
+Figure\ref{Merkle} shows an example of an MHT with four data blocks.
+%
+With the hash digests of its child nodes, the node $N_1$ can construct its digest $H(N_1) = hash(hash(N_{1-0}) \mid hash(N_{1-1}))$
+%
+Therefore, just keeping the root digest can ensure the integrity of whole data blocks.
+%
+Any manipulation on any data records will be detected immediately unless the root is changed correspondingly.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width= 0.95\linewidth]{pic/merkle-tree.pdf}
+    \caption{Merkle Hash Tree}
+    \label{Merkle}
+\end{figure}
+
+\subsubsection{Digital Signature}
+Basically, digital signature consists of three probabilistic polynomial time algorithms including key-generator, signing and verification.
+
+\begin{enumerate}
+    \item \textbf{Key-generator} This step generates a public key $K_{pk}$ which is broadcast to everyone and a private key $K_{sk}$ which is kept privately by its owner.
+    \item \textbf{Signing} Given a message $m$, the prover can use own private key to construct a signature $Sig = signing(K_{sk},m)$.
+    \item \textbf{Verifying} Given a digital signature $Sig$, a message and the prover's public key, the verifier can verdict whether this signature is valid.
+          By verifying the signature, the verifier is convinced that the message is sent by the prover without any tamper. 
+\end{enumerate}
+
+In bitcoin system, public keys are also seen as identities which can be generated as needed.
+
+\subsection{System Structure and Workflow}
+Since the bitcoin network is facto distributed and peer-to-peer communication network, there are no authorities that mediate multi-party disputes.
+%
+To remedy the loss of the centered authority, a distributed consensus protocol must be applied in network to achieve the coordination among miners.
+%
+Each node only accepts valid transactions into hits own block and other nodes accept a new block only if all transactions in this block are valid.
+%
+The unique data structure of blockchain can ensure the integrity of all previous blocks. 
+%
+Following these protocols, bitcoin system could defense some classical attacks like denial-of-service attack and double-spend attack if the majority nodes are honest.
+
+Another significant issue in bitcoin's decentralization is incentive engineering.
+%
+Since bitcoin provides the unlinkability between accounts and real identities, we cannot reward honest nodes or penalize malicious nodes directly.
+%
+Instead of that, bitcoin developers adopt hash puzzles to incite miners to find a new block by exhaustive search.
+%
+Once a mimer successfully finds a nonce that matches this hash puzzle and this new block are proved to be valid, he/she will get corresponding block rewards and transaction fees.
+
+\subsection{Contributions}
+The first two chapters briefly introduce the preliminaries and the way bitcoin achieves the decentralization. 
+
+
 \section{Summary of Paper\cite{bonneau2015sok}}
 
 \subsection{Problem Statement}
@@ -132,44 +210,12 @@ In general, it collects masses of scattered materials and arrange them in an inn
 \subsection{Remaining Questions}
 This survey focuses on the public blockchain like bitcoin and zerocoin. 
 %
-Since blockchain is a hot filed in both academia and industry, the survey could be outdated easily.
+Since the blockchain is a hot filed in both academia and industry, the survey could be outdated easily.
 %
 Nowadays, private blockchain like Hyperledger\cite{androulaki2018hyperledger} adopts a deterministic protocol to ensure stability of whole system.
 %
 And many financial institutions consider it as a promising tool to realize an access control mechanism.
 
-
-
-
-\section{Summary of Paper\cite{bonneau2015sok}}
-
-\subsection{Problem Statement}
-Guidelines: Here you should explicitly summarize the problem targeted by the paper. A rough and brief example might be as follows.
-%
-The paper targets the problem of searching encrypted outsourced data on the cloud.
-%
-Particularly, how to enable a client to perform search and get the correct search result when both the cloud database and query keywords are encrypted?
-
-\subsection{Problem Significance}
-Guidelines: Here you should explain why the problem targeted by the paper is important and has value.
-%
-In particular, what is the motivation of this paper?
-
-
-\subsection{State of the Art}
-
-Guidelines: Here you should describe the state of the art as reflected in the paper at that time.
-%
-
-
-
-\subsection{Contributions}
-Guidelines: Here you should summarize the contributions of the paper in your own words.
-%
-For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
-
-\subsection{Remaining Questions}
-Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
