@@ -5,6 +5,7 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{color}
 \usepackage{enumerate}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -27,21 +28,21 @@ In the first two chapters of this book\cite{cryptobook}, the authors introduce t
 %
 And to make these concepts more understandable, they also explain some basic concepts in details.
 %
-Glossing over some technical details in implementation, I will conclude these two chapters on two aspects of rudimentary concepts and system structure.
+Glossing over some technical details in implementation, I will summarize these two chapters from two perspectives of rudimentary concepts and system structure.
 
-\subsection{Rudimentary Concepts}
+\subsection{Preliminaries}
 \subsubsection{Cryptographic Hash Functions}
 A cryptographic hash function $H(\cdot)$ is a mathematical function which accepts an arbitrary-length string as its input and produces a fixed-length bit string.
 %
 Hash function has the following three properties:
 
 \begin{enumerate}[(i)]
-    \item \textbf{Collision-resistance} It is infeasible to find two different inputs $m_{1}$, $m_{2}$ such that $H(m_1) = H(m_2)$.
-    \item \textbf{Hiding} Given $H(m)$, there exists no efficient algorithms that can find its original input $m$.
-    \item \textbf{Puzzle-friendly} Given a uniformly chosen-random k, it is computationally infeasible to find x such that $H(k \mid x) = y$ 
+    \item \textbf{Collision-resistance.} It is infeasible to find two different inputs $m_{1}$, $m_{2}$ such that $H(m_1) = H(m_2)$.
+    \item \textbf{Hiding.} Given $H(m)$, there exists no efficient algorithms that can find its original input $m$.
+    \item \textbf{Puzzle-friendly.} Given a uniformly chosen-random k, it is computationally infeasible to find x such that $H(k \mid x) = y$ 
 \end{enumerate}
 
-Bitcoin developers adopted SHA-256 to construct other complicated data structures. Its compression feature could save data space efficiently.
+Bitcoin developers adopted a classical hash function called SHA-256 to construct other complicated data structures. Its compression feature could save data space efficiently.
 
 \subsubsection{Merkle Hash Tree\cite{merkle1989certified}}
 A Merkle Hash Tree (MHT) is a hierarchical data structure which could be used to authenticate a set of data objects with logarithmic time complexity.
@@ -50,7 +51,7 @@ Each leaf node contains a hash digest of a data record and each non-leaf node is
 %
 Figure\ref{Merkle} shows an example of an MHT with four data blocks.
 %
-With the hash digests of its child nodes, the node $N_1$ can construct its digest $H(N_1) = hash(hash(N_{1-0}) \mid hash(N_{1-1}))$
+With the hash digests of its child nodes, the node $N_1$ can construct its digest  $\color{red} H(N_1) = hash(hash(N_{1-0}) \mid hash(N_{1-1}))$
 %
 Therefore, just keeping the root digest can ensure the integrity of whole data blocks.
 %
@@ -67,20 +68,20 @@ Any manipulation on any data records will be detected immediately unless the roo
 Basically, digital signature consists of three probabilistic polynomial time algorithms including key-generator, signing and verification.
 
 \begin{enumerate}
-    \item \textbf{Key-generator} This step generates a public key $K_{pk}$ which is broadcast to everyone and a private key $K_{sk}$ which is kept privately by its owner.
-    \item \textbf{Signing} Given a message $m$, the prover can use own private key to construct a signature $Sig = signing(K_{sk},m)$.
-    \item \textbf{Verifying} Given a digital signature $Sig$, a message and the prover's public key, the verifier can verdict whether this signature is valid.
+    \item \textbf{Key-generator.} This step generates a public key $K_{pk}$ which is broadcast to everyone and a private key $K_{sk}$ which is kept privately by its owner.
+    \item \textbf{Signing.} Given a message $m$, the prover can use own private key to construct a signature $\color{red} Sig = signing(K_{sk},m)$.
+    \item \textbf{Verifying.} Given a digital signature $Sig$, a message and the prover's public key, the verifier can verdict whether this signature is valid.
           By verifying the signature, the verifier is convinced that the message is sent by the prover without any tamper. 
 \end{enumerate}
 
-In bitcoin system, public keys are also seen as identities which can be generated as needed.
+In bitcoin system, public keys are also considered as identities which can be generated as needed.
 
 \subsection{System Structure and Workflow}
 Since the bitcoin network is facto distributed and peer-to-peer communication network, there are no authorities that mediate multi-party disputes.
 %
-To remedy the loss of the centered authority, a distributed consensus protocol must be applied in network to achieve the coordination among miners.
+To remedy the loss of the centered authority, a distributed consensus protocol must be applied in network to achieve the coordination among miners and users.
 %
-Each node only accepts valid transactions into hits own block and other nodes accept a new block only if all transactions in this block are valid.
+Each node only accepts valid transactions into its own block and other nodes accept a new block only if all transactions in this block are valid.
 %
 The unique data structure of blockchain can ensure the integrity of all previous blocks. 
 %
@@ -88,11 +89,11 @@ Following these protocols, bitcoin system could defense some classical attacks l
 
 Another significant issue in bitcoin's decentralization is incentive engineering.
 %
-Since bitcoin provides the unlinkability between accounts and real identities, we cannot reward honest nodes or penalize malicious nodes directly.
+{\color{red} Since bitcoin provides the unlinkability} between accounts and real identities, we cannot reward honest nodes or penalize malicious nodes directly.
 %
-Instead of that, bitcoin developers adopt hash puzzles to incite miners to find a new block by exhaustive search.
+Instead of that, bitcoin developers adopt hash puzzles to incite miners to find a new block only by exhaustive search.
 %
-Once a mimer successfully finds a nonce that matches this hash puzzle and this new block are proved to be valid, he/she will get corresponding block rewards and transaction fees.
+Once a mimer successfully finds a nonce that matches this hash puzzle and this new block is    proved to be valid, he/she will get corresponding block rewards and transaction fees.
 
 \subsection{Contributions}
 The first two chapters briefly introduce the preliminaries and the way bitcoin achieves the decentralization. 
@@ -112,7 +113,7 @@ Through surveying the state of the art in bitcoin and its related cryptocurrenci
 \subsection{Problem Significance}
 It is a great challenge to capture core techniques well in cryptocurrencies due to their rapidly appearing techniques and applications.
 %
-What's more, how to analyze the major issues and propose possible research directions in a reasonable manner also remains a puzzle.
+What's more, how to analyze the striking issues and propose promising research directions in a reasonable manner also remains a puzzle.
 
 
 \subsection{State of the Art}
@@ -121,7 +122,7 @@ In this section, I summarize this paper from the following perspectives: system 
 \subsubsection{System Structure and Workflow}
 In the decentralized bitcoin system, the key problems are twofold. 
 %
-One problem is how to ensure the security of public transactions since there is no centralized infrastructure like bank which can maintain the transactions service.
+One problem is to ensure the security of public transactions since there is no centralized infrastructure like bank which can maintain the transactions service.
 %
 The other problem lies in how to design an efficient consensus protocol that can incentivize all users to behave honestly.
 
@@ -139,9 +140,9 @@ This ledger, which is constructed as a sequence of blocks by miners, contains th
 (iii) Consensus-proof nonce which guarantees the validity of each block;  
 (iv) Merkle hash tree which aggregates the inner-block transactions efficiently.
 
-In order to address coordination problems, bitcoin adopts a consensus mechanism called proof-of-work.
+In order to address coordination problems, bitcoin adopts the consensus mechanism called proof-of-work.
 %
-In this setting, miners can append a new block on the longest chain by solving a computational puzzle.
+In this setting, miners can append a new block on the longest chain by solving a computational hash puzzle.
 %
 Therefore, simple exhaustive search reduces all possible competitiveness into computational power which needs ideal hardware and expensive electricity.
 %
@@ -166,7 +167,7 @@ All the existing analyses are based on a strong assumption that all miners will 
 %
 However the realistic situation might be more complex and hard to balance perfectly.
 %
-There exists many possible problems, such as excessive power of a majority miner and collusion among smaller miners.
+There exists variety of potential problems, such as excessive power of a majority miner and collusion among smaller miners.
 %
 For example, in January 2019 the ethereum\cite{wood2014ethereum} suffered from a majority attack which was once deemed impossible.
 %
@@ -195,11 +196,11 @@ In the communication network, a soft-fork change is preferred due to its backwar
 %
 But sometimes, it is also essential for bitcoin developers to adopt hard-fork measurements to fill severe security gaps.
 %
-For instance, an anonymous hacker utilized a loophole in the coding to steal 3.6 million Ether in just few hours. 
+For instance, an anonymous hacker utilized a loophole in the coding to steal 3.6 million Ether within just few hours in July 2016. 
 %
 As a urgent remedy action, the Ethereum community almost unanimously agreed to implement hard-fork. 
 %
-In addition, alternative consensus algorithms including system parameters and computational puzzles (e.g. PoS\cite{king2012ppcoin}, PoA\cite{gunnam2008next}, Threshold delay\cite{Dfinity}, PoB\cite{Slimcoin}) are merging constantly.  
+In addition, alternative consensus algorithms including system parameters and computational puzzles (e.g. PoS\cite{king2012ppcoin}, PoA\cite{gunnam2008next}, Threshold delay\cite{Dfinity}, PoB\cite{Slimcoin}) are also merging constantly.  
 
 
 \subsection{Contributions}
@@ -208,11 +209,11 @@ This survey introduces the primary technologies and possible future directions a
 In general, it collects masses of scattered materials and arrange them in an innovative and reasonable manner. 
 
 \subsection{Remaining Questions}
-This survey focuses on the public blockchain like bitcoin and zerocoin. 
+This survey focuses on the public blockchains like bitcoin and zerocoin. 
 %
-Since the blockchain is a hot filed in both academia and industry, the survey could be outdated easily.
+Since blockchain is a hot filed in both academia and industry, the survey could be outdated easily.
 %
-Nowadays, private blockchain like Hyperledger\cite{androulaki2018hyperledger} adopts a deterministic protocol to ensure stability of whole system.
+Nowadays, private blockchain applications like Hyperledger\cite{androulaki2018hyperledger} which adopt a deterministic protocol to ensure stability of whole system strike the world spotlight.
 %
 And many financial institutions consider it as a promising tool to realize an access control mechanism.
 
