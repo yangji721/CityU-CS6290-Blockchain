@@ -51,7 +51,7 @@ Each leaf node contains a hash digest of a data record and each non-leaf node is
 %
 Figure\ref{Merkle} shows an example of an MHT with four data blocks.
 %
-With the hash digests of its child nodes, the node $N_1$ can construct its digest  $\color{red} H(N_1) = hash(hash(N_{1-0}) \mid hash(N_{1-1}))$
+With the hash digests of its child nodes, the node $N_1$ can construct its digest  $H_{N_1} = hash(H_{N_{1-0}} \mid H_{N_{1-1}})$
 %
 Therefore, just keeping the root digest can ensure the integrity of whole data blocks.
 %
@@ -69,7 +69,7 @@ Basically, digital signature consists of three probabilistic polynomial time alg
 
 \begin{enumerate}
     \item \textbf{Key-generator.} This step generates a public key $K_{pk}$ which is broadcast to everyone and a private key $K_{sk}$ which is kept privately by its owner.
-    \item \textbf{Signing.} Given a message $m$, the prover can use own private key to construct a signature $\color{red} Sig = signing(K_{sk},m)$.
+    \item \textbf{Signing.} Given a message $m$, the prover can use own private key to construct a signature $Sig = Signing(K_{sk},m)$.
     \item \textbf{Verifying.} Given a digital signature $Sig$, a message and the prover's public key, the verifier can verdict whether this signature is valid.
           By verifying the signature, the verifier is convinced that the message is sent by the prover without any tamper. 
 \end{enumerate}
@@ -89,11 +89,11 @@ Following these protocols, bitcoin system could defense some classical attacks l
 
 Another significant issue in bitcoin's decentralization is incentive engineering.
 %
-{\color{red} Since bitcoin provides the unlinkability} between accounts and real identities, we cannot reward honest nodes or penalize malicious nodes directly.
+Since bitcoin guarantees the unlinkability between accounts and real identities, we cannot reward honest nodes or penalize malicious nodes directly.
 %
 Instead of that, bitcoin developers adopt hash puzzles to incite miners to find a new block only by exhaustive search.
 %
-Once a mimer successfully finds a nonce that matches this hash puzzle and this new block is    proved to be valid, he/she will get corresponding block rewards and transaction fees.
+Once a mimer successfully finds a nonce that matches this hash puzzle and this new block is proved to be valid, he/she will get corresponding block rewards and transaction fees.
 
 \subsection{Contributions}
 The first two chapters briefly introduce the preliminaries and the way bitcoin achieves the decentralization. 
