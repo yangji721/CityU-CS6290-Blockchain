@@ -7,7 +7,7 @@ This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. T
 
 - **[Bitcoin and Cryptocurrency Technologies](https://lopp.net/pdf/princeton_bitcoin_book.pdf)**. Arvind Narayanan, Joseph Bonneau, Edward Felten, Andrew Miller, Steven Goldfeder '16
 
-- **[ETHEREUM Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf)**. Dr. Gavin Wood 2018-12-10
+- **[ETHEREUM Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf)**. Dr. Gavin Wood '18
 
 - **[Bitcoin: A Peer-to-Peer Electronic Cash System](https://bitcoin.org/bitcoin.pdf)**. Satoshi Nakamoto '14
 
@@ -15,4 +15,3 @@ This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. T
 
 - **[Blockchains from a Distributed Computing Perspective](https://cacm.acm.org/magazines/2019/2/234355-blockchains-from-a-distributed-computing-perspective/fulltext)**. Maurice Herlihy '19
 
-- **[Bitcoin and Cryptocurrency Technologies](https://lopp.net/pdf/princeton_bitcoin_book.pdf)**. Arvind Narayanan, Joseph Bonneau, Edward Felten, Andrew Miller, Steven Goldfeder '16
