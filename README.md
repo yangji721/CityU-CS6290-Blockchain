@@ -14,3 +14,5 @@ This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. T
 - **[Blockchains and Smart Contracts for the Internet of Things](https://mycourses.aalto.fi/pluginfile.php/378344/mod_resource/content/1/Christidis%20and%20Devetsikiotis.pdf)**. Konstantinos Christidis, Michael Devetsikiotis '16
 
 - **[Blockchains from a Distributed Computing Perspective](https://cacm.acm.org/magazines/2019/2/234355-blockchains-from-a-distributed-computing-perspective/fulltext)**. Maurice Herlihy '19
+
+- **[Bitcoin and Cryptocurrency Technologies](https://lopp.net/pdf/princeton_bitcoin_book.pdf)**. Arvind Narayanan, Joseph Bonneau, Edward Felten, Andrew Miller, Steven Goldfeder '16
