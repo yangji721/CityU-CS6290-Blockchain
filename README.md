@@ -15,3 +15,6 @@ This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. T
 
 - **[Blockchains from a Distributed Computing Perspective](https://cacm.acm.org/magazines/2019/2/234355-blockchains-from-a-distributed-computing-perspective/fulltext)**. Maurice Herlihy '19
 
+## License
+
+[![CC-BY 4.0](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by.svg)](http://creativecommons.org/licenses/by/4.0/)
