@@ -1,4 +1,4 @@
-# **CS6290 Summary**
+# **CityU CS6290 Summary**
 This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. The instructor is Dr. [Cong Wang](http://www.cs.cityu.edu.hk/~congwang/).
 
 ## **Reading List of Assignment One**
