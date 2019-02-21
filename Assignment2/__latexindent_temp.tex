@@ -63,7 +63,7 @@ In particular, it consists of three main algorithms:
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Key-Generator.} Given a security parameter $1^{\lambda}$, it outputs a key $k$.
     \item \textbf{Signing.} Using the key $k$, it can output a tag $x$ according to the message $m$.
-    \item \textbf{Verifying.} Given a tuple $(k, m, Signing(k, m))$, it outputs a decision bit (0 or 1) to tell whether the message m is authentic.
+    \item \textbf{Verifying.} Given a tuple $(k, m, Signing(k, x))$, it outputs a decision bit (0 or 1) to tell whether the message m is authentic.
 \end{enumerate}
 
 \subsection{State of the Art}
@@ -85,38 +85,10 @@ The goals of three phase protocols are two-fold.
 %
 One is to establish the total order of execution of requests in the pre-prepare and prepare phase.
 %
-The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} R \mid$) by the commit operations.
-
-The algorithm adopted in this paper is actually a variant of state machine replication shown in Figure\ref{pbft}, including request, pre-prepare, prepare, commit and reply.
-%
-And it can be concluded as follows:
-
-\begin{enumerate}[label=(\roman*)]
-    \item \textbf{Request.} In this period, the client sends a request to the primary server.
-    \item \textbf{Pre-prepare.} Upon receiving a new request, the primary node will assign the request a sequence number and then broadcasts this to all replicas. 
-    Backup nodes won't accept this request unless the view number, sequence number and tag (message integrity) is valid.
-    \item \textbf{Prepare.} After backup nodes accept ${<}pre{-}prepare{>}$ message, it multicasts a ${<}Prepare{>}$ message acknowledgement.
-    And this predicate will be accepted only if a replica collects $2f+1$ valid and distinct message. This phase is aimed to ensure the consensus on the sequence number among replicas. 
-    In other words, it guarantees that any different messages never have the same sequence number.
-    \item \textbf{Commit.} The commit phase is introduced to ensure the total order (consistency) across the views. 
-    When receiving $2f+1$ valid and distinct ${<}commit{>}$ messages, the replica could claim that the whole network has reached the consensus.  
-    If the primary is suspected as a malicious node, backup servers may request a view change. 
-    \item \textbf{Reply.} After the right execution of client's request, the backup node would reply to the client with corresponding answers.
-\end{enumerate}
-
-The above five algorithms jointly provide the safety and liveness of the whole system.
-%
-The safety means that all honest replicas reach the consensus finally, otherwise they will detect the primary is faulty.
-%
-And the liveness means that the whole system cannot be blocked by the faulty nodes forever (Replicas would move to a new view).
+The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} N \mid$) by the commit operations.
 
 \subsection{Remaining Questions}
-The main problem of this three-phase protocol is its communication overhead. 
-%
-Since its algorithm complexity is $O(n^2)$, the system based on BFT and state machine replication has poor scalability.
-%
-Unlike the high scalability of Proof-of-Work consensus, it only supports very limited nodes in the network.
-
+Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
 
 \section{Summary of Paper \cite{CurtmolaGKO06}}
 
