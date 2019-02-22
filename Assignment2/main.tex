@@ -85,7 +85,7 @@ The goals of three phase protocols are two-fold.
 %
 One is to establish the total order of execution of requests in the pre-prepare and prepare phase.
 %
-The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} R \mid$) by the commit operations.
+The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} R \mid$ by the commit operations.
 
 The algorithm adopted in this paper is actually a variant of state machine replication shown in Figure\ref{pbft}, including request, pre-prepare, prepare, commit and reply.
 %
@@ -118,35 +118,84 @@ Since its algorithm complexity is $O(n^2)$, the system based on BFT and state ma
 Unlike the high scalability of Proof-of-Work consensus, it only supports very limited nodes in the network.
 
 
-\section{Summary of Paper \cite{CurtmolaGKO06}}
+\section{Summary of Paper\cite{croman2016scaling}}
 
 \subsection{Problem Statement}
-Guidelines: Here you should explicitly summarize the problem targeted by the paper. A rough and brief example might be as follows.
-%
-The paper targets the problem of searching encrypted outsourced data on the cloud.
-%
-Particularly, how to enable a client to perform search and get the correct search result when both the cloud database and query keywords are encrypted?
+This paper tries to explain and analyze the possible solutions on efficiently scaling current blockchain systems, including parameter tuning and reconstruction of a scalable blockchain.
 
 \subsection{Problem Significance}
-Guidelines: Here you should explain why the problem targeted by the paper is important and has value.
+As a cryptocurrency system, current blockchain needs to improve the capacity of dealing with transactions.
 %
-In particular, what is the motivation of this paper?
-
+Take Bitcoin as an example.
+%
+In Bitcoin network, miners need 10 minutes or more to publish a new block and confirm 7 transactions per second at most.
+%
+In comparison, visa credit card which is a mainstream payment processor can deal with about 2000 transactions per second.
+%
+The huge gap between blockchain system and traditional payment processor incentivizes blockchain developers to rethink how to scale up network efficiently.
 
 \subsection{State of the Art}
-
-Guidelines: Here you should describe the state of the art as reflected in the paper at that time.
+This article reviews the current technologies on scaling blockchains from two perspectives.
 %
+For one thing, reparameterization of block size and intervals can be viewed as a temporary and limited approach to more scalable blockchains.
+%
+For another thing, a radical reconstruction of blockchain systems might be the fundamental solutions on scaling up the throughput of blockchains.  
+%
+Before concluding the analysis of these approaches, I firstly will introduce some preliminaries on network measurement.
 
+\subsection{Preliminaries}
+
+\subsubsection{Maximum Throughput} It describes the maximum quantity of transactions which blockchains could confirm. In general, it is mainly adjusted by the block size and inter-block intervals.
+
+\subsubsection{Latency} Based on the pre-defined consensus protocol, a new block containing variety of transactions needs to wait for around 10 minutes to be confirmed determinately.
+
+\subsubsection{Bootstrap Time} It records the time that a newly joint node needs to prepare for validating the current network status. For Bitcoin, this time is roughly 4 days.
+
+\subsubsection{Cost per Confirmed Transaction (CPCT)} CPCT represents the average cost of confirming a new transaction in the form of USD. 
+%
+In more details, the cost could derive from the following four sources: (i) Mining (ii) Transaction validation (iii) Bandwidth (iv) Storage.
+
+\subsubsection{X$\%$ Effective Throughput} Here, authors define this concept as (block size) / (X$\%$ block propagation delay) which means that (100-X)$\%$ of the nodes in the network are unable to receive blocks correctly.
 
 
 \subsection{Contributions}
-Guidelines: Here you should summarize the contributions of the paper in your own words.
+
+\subsubsection{Parameter Tuning} 
+To be more precise, we could adjust the block size (decides to contain how many transactions in each block) and inter-block intervals actually. 
 %
-For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+However, we can't increase the block size and reduce intervals infinitely.
+%
+In order to keep the property of decentralization in the whole system, X$\%$ effective throughput should be at a relatively high level.
+%
+In other words, if X is fixed on 90, what we could do is just to increase the block size or reduce the inter-block intervals unilaterally.
+%
+And there exists two main limits on current overlay network:
+
+\begin{itemize}
+    \item \textbf{Throughput Limit.} Assume that the inter-block interval is 10 minutes, the block size should not exceed 4MB which can support up to 27 transactions per sec.
+    \item \textbf{Latency Limit.} In order to thoroughly employ the bandwidth of the network, the block intervals should be smaller than 12 second.
+\end{itemize}
+
+\subsubsection{Hierarchical Design of a Scalable Blockchain}
+The paper concludes this design from five perspectives: Network, Consensus, Storage, View and Side planes.
+
+\begin{itemize}
+    \item \textbf{Network Plane.} The main reason for latency in Bitcoin is the duplex transmissions at the node level. 
+    Nodes need to validate local transactions before publishing this new block.
+    A set reconciliation protocol and a centralized, high-speed relay network specially for miners' communication can be possible approaches to this problem.
+    \item \textbf{Consensus Plane.} This network plane is aimed to achieve the consensus in the whole network. 
+    Many alternatives can substitute PoW protocol to improve the network performance, like GHOST, PoS et al.
+    It is worth nothing that sharding (splitting up the problem of consensus) or delegation of trusted and hierarchical sidechains might be a potential solution.
+    \item \textbf{Storage Plane.} It provides the storage service for the consensus plane. Operations might include writing, deleting and reading.
+    \item \textbf{View Plane.} Authors put forward two potential approaches including nodes replication and data outsourcing.
+    \item \textbf{Side Plane.} Side plane provides a off-chain method to realize the payment in a more efficient manner. 
+    Through pre-established channels, it solves the inherent problems by introducing a centralized approach.
+\end{itemize}
 
 \subsection{Remaining Questions}
-Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+Although with these potential solutions on scaling up the blockchain system, it still remains a huge challenge of coordinate the whole system in an efficient manner.
+%
+What's more, how to persuade the majority to accept a hard fork is another difficult task for the community. 
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
