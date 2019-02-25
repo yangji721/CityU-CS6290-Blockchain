@@ -28,18 +28,18 @@ Dept.\ of Computer Science}
 
 
 \subsection{Problem Statement}
-This paper aims to develop a new replication algorithm to solve Byzantine fault problem efficiently.
+This paper aims to develop a new replication algorithm to solve Byzantine fault problem in an efficient manner.
 %
 In particular, it mainly focuses on the asynchronous environment and tries to reduce the response time by adopting many optimizations. 
 %
 Therefore, how to efficiently improve the system performance without satisfying any security still remained a huge challenge in that era.
 
 \subsection{Problem Significance}
-In the distributed system, there is no centralized parties to store and manage node information which can monitor the network running.
+In the distributed system, there is no centralized party to store and manage node information which is used to monitor the network running.
 %
 And some network nodes might perform a wide variety of Byzantine behaviors like message delay, corruption, crashes and so on.
 %
-Hence, it is of significance for a peer-to-peer network to reach a final consensus in an efficient manner.
+Hence, it is of significance for a peer-to-peer network to reach a final consensus within a finite time.
  
 \subsection{Preliminaries}
 \subsubsection{Replication} 
@@ -85,7 +85,7 @@ The goals of three phase protocols are two-fold.
 %
 One is to establish the total order of execution of requests in the pre-prepare and prepare phase.
 %
-The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} R \mid$ by the commit operations.
+The other one is to ensure that requests are ordered consistently across views (configurations of replicas with a primary $p = v\ mod\ {\mid} R \mid$ by the commit operations).
 
 The algorithm adopted in this paper is actually a variant of state machine replication shown in Figure\ref{pbft}, including request, pre-prepare, prepare, commit and reply.
 %
@@ -193,7 +193,7 @@ The paper concludes this design from five perspectives: Network, Consensus, Stor
 \end{itemize}
 
 \subsection{Remaining Questions}
-Although with these potential solutions on scaling up the blockchain system, it still remains a huge challenge of coordinate the whole system in an efficient manner.
+Although with these potential solutions on scaling up the blockchain system, it still remains a huge challenge of coordinating the whole system in an efficient manner.
 %
 What's more, how to persuade the majority to accept a hard fork is another difficult task for the community. 
 
