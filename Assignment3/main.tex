@@ -6,15 +6,19 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{romannum}
+\usepackage{enumitem}   
+
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{CS6290: Reading Summary }
+\title{CS6290: Reading Summary \Romannum{3}}
 
-\author{\IEEEauthorblockN{Student A}
+\author{\IEEEauthorblockN{Yang Ji}
 \IEEEauthorblockA{Dept. of Computer Science \\
-ID:12341000}
+ID: 56064832}
 }
 
 \maketitle
@@ -23,32 +27,79 @@ ID:12341000}
 
 
 \subsection{Problem Statement}
-Guidelines: Here you should explicitly summarize the problem targeted by the paper. A rough and brief example might be as follows.
+This survey paper targets on a systematic summary of security and privacy issues in Bitcoin.
 %
-The paper targets the problem of searching encrypted outsourced data on the cloud.
+To be more specific, the authors firstly present a overview of its workflow and protocols. 
 %
-Particularly, how to enable a client to perform search and get the correct search result when both the cloud database and query keywords are encrypted?
+From perspectives of system security and privacy, they then discuss the existing vulnerabilities and countermeasures elaborately.
+%
+By analyzing pros and cons of these possible solutions, they summarize the open questions and latent research directions of blockchain.
 
 \subsection{Problem Significance}
-Guidelines: Here you should explain why the problem targeted by the paper is important and has value.
-%
-In particular, what is the motivation of this paper?
-
+Compared to other general survey papers, this paper focuses on the security and privacy issues in Bitcoin, which renders an detailed security analysis to us. 
 
 \subsection{State of the Art}
-
-Guidelines: Here you should describe the state of the art as reflected in the paper at that time.
+Apart from double spending, there are also many other types of attacks on Bitcoin like mining pool attacks, cryptography tool attacks and so on.
 %
+According to the tutorials taught by TA and the descriptions in paper, I conclude these attacks as follows:
+%
+\begin{enumerate}[label=(\roman*)]
+   \item  \textbf{Double Spending.} Although Satoshi Nakamoto claimed that double spending problems can be avoided in a high probability based on the assumption of majority honest nodes.
+   However, this classical problem in cryptocurrency could still happen possibly by following a specific workflow.
+   For example, two partial confirmations on the same unspent money might lead to a successful double spending. 
+   
+   For my point of view, it is very necessary for recipients to wait seven blocks to get a global confirmation.
+   But if the computational power of adversaries takes up a large proportion, waiting for multiple confirmations could still fail.
+   Except for the power of CPU, some other factors like network propagation delay, exchange service connectivity and node position in network also could bring about a double-spending.
+   \item  \textbf{Mining Pool Attacks.} Due to the highly concentrated power of mining pool, it could easily lead to a selfish mining or 51$\%$ attack.
+   Another scenario is called Pool Hopping attack. Adversaries might collect the submitted shares from fellow miners and avoid these invalid attempts.
+   What's more, bribery attacks would involve multi-party game.
+   \item \textbf{Client-side Threats.} Threat model in this part is related to key management techniques.
+   In particular, Bitcoin adopts elliptic curve digital signature algorithm (ECDSA) to ensure the security of transactions.
+   However, this signature scheme has some potential treats (e.g. collision attack) and current system has no migration plans for broken cryptographic scheme.
+   And there are many third-party wallets targeting to address the tension between usability and security at the Bitcoin client.  
+   \item \textbf{Attacks on Bitcoin and Networking Infrastructure.} 
+   This section lists a number of attacks on distributed network, including DDoS attacks, Malleability attacks, Refund attacks and Time jacking attack.
+\end{enumerate}
+%
+After rendering the above four kinds of security problems, the authors also provide several possible solutions. 
+%
+The key problem lies in its Proof-of-Work protocol. 
+%
+Therefore, many variants are proposed to address potential issues from the perspective of how to generate and verify a new block.
+%
+Despite these variants solve some specific problems in Bitcoin, they are usually based on some strong assumptions and could also bring about new troubles.
+%
+For example, although Proof-of-Elapsed-Time avoids resources waste successfully, it incurs stale and broken chip problems.
 
+Apart from security problems, privacy issues are also concerned by the public.
+%
+In fact, Bitcoin provides the unlinkability in some degree.
+%
+Users could hide their true identities in a high possibility by generating a fresh blockchain address for each transaction.
+%
+However, some adversaries might utilize graph analysis of transactions, addresses or entities to deduce the relationships among different transactions.
+%
+This heuristic method works well especially on the publicly known addresses.
+%
+What's more, IP address leakage could also lead to a successful deanonymization attack.
 
+As a countermeasure, mixing protocol could solve external unlinkability effectively.
+%
+However, it also incurs other problems like limited scalability and internal privacy leakage.
+%
+Another solution, like ZeroCash and ZeroCoin, is to realize a total privacy-preserving transaction by utilizing a trusted hardware called zk-SNARKs. 
 
 \subsection{Contributions}
-Guidelines: Here you should summarize the contributions of the paper in your own words.
-%
-For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+This paper mainly focuses on the security and privacy issues of Bitcoin and conduct many detailed analyses on state-of-the-art solutions.
 
 \subsection{Remaining Questions}
-Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+The domain of this paper is only limited to the security and privacy perspective of Bitcoin.
+%
+Other cryptocurrency like Ethereum, which firstly introduces the smart contract, has many different threats and challenges.
+%
+And how to effectively balance the tensions in these cryptocurrencies still remains an open question.
+
 
 \section{Summary of Paper \cite{CurtmolaGKO06}}
 
