@@ -27,7 +27,7 @@ ID: 56064832}
 
 
 \subsection{Problem Statement}
-This survey paper targets on a systematic summary of security and privacy issues in Bitcoin.
+This survey paper targets on a systematic summary of privacy and security issues in Bitcoin.
 %
 To be more specific, the authors firstly present a overview of its workflow and protocols. 
 %
@@ -36,7 +36,7 @@ From perspectives of system security and privacy, they then discuss the existing
 By analyzing pros and cons of these possible solutions, they summarize the open questions and latent research directions of blockchain.
 
 \subsection{Problem Significance}
-Compared to other general survey papers, this paper focuses on the security and privacy issues in Bitcoin, which renders an detailed security analysis to us. 
+Compared to other general survey papers, this paper focuses on the privacy and security issues in Bitcoin, which renders an detailed security analysis to us. 
 
 \subsection{State of the Art}
 Apart from double spending, there are also many other types of attacks on Bitcoin like mining pool attacks, cryptography tool attacks and so on.
@@ -91,7 +91,7 @@ However, it also incurs other problems like limited scalability and internal pri
 Another solution, like ZeroCash and ZeroCoin, is to realize a total privacy-preserving transaction by utilizing a trusted hardware called zk-SNARKs. 
 
 \subsection{Contributions}
-This paper mainly focuses on the security and privacy issues of Bitcoin and conduct many detailed analyses on state-of-the-art solutions.
+This paper mainly focuses on the privacy and security issues of Bitcoin and conduct many detailed analyses on state-of-the-art approaches.
 
 \begin{table*}[!t]
     \caption{Comparison of the most popular zkp systems}
@@ -158,7 +158,7 @@ Summarizing, systems for ensuring computational integrity over confidential data
 From the perspective of the above six properties, the existing solutions can be summarized as follows:
 
 \begin{itemize}
-    \item \textbf{Homomorphic public-key cryptography (kPKC):} ZK-SNARk is a classical zk system based on this theorem, which serves in ZeroCoin and ZeroCash system for privacy-preserving transactions.
+    \item \textbf{Homomorphic public-key cryptography (hPKC):} ZK-SNARk is a classical zk system based on this theorem, which serves in ZeroCoin and ZeroCash system for privacy-preserving transactions.
     Compared to ZK-STARK, hPKC methods lack transparency and post-quantum security. But verification time in hPKC is scalable. 
     \item \textbf{Discrete logarithm problem (DLP):} The approach based on DLP has advantages on its succinct proof size and no trusted setup phase.
     However, due to broken DLP under quantum factoring algorithms, this method is actually quantum-susceptible. And verifier needs much resources to valid the proof.  
