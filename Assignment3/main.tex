@@ -23,7 +23,7 @@ ID: 56064832}
 
 \maketitle
 
-\section{Summary of Paper \cite{SongWP00}}
+\section{Summary of Paper \cite{conti2018survey}}
 
 
 \subsection{Problem Statement}
@@ -64,11 +64,11 @@ According to the tutorials taught by TA and the descriptions in paper, I conclud
 %
 After rendering the above four kinds of security problems, the authors also provide several possible solutions. 
 %
-The key problem lies in its Proof-of-Work protocol. 
+The key problem lies in its consensus protocol called Proof-of-Work (PoW). 
 %
-Therefore, many variants are proposed to address potential issues from the perspective of how to generate and verify a new block.
+Therefore, many variants of PoW are proposed to address security issues in a new way of generating and verifying a new block.
 %
-Despite these variants solve some specific problems in Bitcoin, they are usually based on some strong assumptions and could also bring about new troubles.
+Despite these schemes solve specific problems in Bitcoin, they usually rely on some strong assumptions and also bring about new troubles.
 %
 For example, although Proof-of-Elapsed-Time avoids resources waste successfully, it incurs stale and broken chip problems.
 
@@ -93,6 +93,24 @@ Another solution, like ZeroCash and ZeroCoin, is to realize a total privacy-pres
 \subsection{Contributions}
 This paper mainly focuses on the security and privacy issues of Bitcoin and conduct many detailed analyses on state-of-the-art solutions.
 
+\begin{table*}[!t]
+    \caption{Comparison of the most popular zkp systems}
+    \centering
+    \begin{tabular}{c rrr}
+        \hline \hline
+        Case & SNARKs & STARKs & Bulletproofs \\
+        \hline
+        Proving Algorithm & O($N {\times} log(N)$) & O($N {\times} poly{-}log(N)$) & O($N {\times} log(N)$) \\
+        Verifying Algorithm & O(1) & O($poly{-}log(N)$) & O($N$) \\
+        Proof Size & O(1) & O($poly{-}log(N)$) & O($log(N)$) \\
+        Trusted Setup Required & Yes & No & No \\
+        Post-quantum secure & No & Yes & No \\
+        Crypto assumption & Strong & Collision resistant & Discrete Log \\
+        \hline
+    \end{tabular}
+    \label{compare}
+\end{table*}
+
 \subsection{Remaining Questions}
 The domain of this paper is only limited to the security and privacy perspective of Bitcoin.
 %
@@ -101,35 +119,75 @@ Other cryptocurrency like Ethereum, which firstly introduces the smart contract,
 And how to effectively balance the tensions in these cryptocurrencies still remains an open question.
 
 
-\section{Summary of Paper \cite{CurtmolaGKO06}}
+
+\section{Summary of Paper \cite{ben2018scalable}}
 
 \subsection{Problem Statement}
-Guidelines: Here you should explicitly summarize the problem targeted by the paper. A rough and brief example might be as follows.
+This paper presents a zero-knowledge (ZK) proof system which enables verifiable computation with strong confidentiality.
 %
-The paper targets the problem of searching encrypted outsourced data on the cloud.
+Compared to ZK-SNARK system, ZK-STARK has no reliance on a trusted third party to generate its initial proving key.
 %
-Particularly, how to enable a client to perform search and get the correct search result when both the cloud database and query keywords are encrypted?
+What's more, with assumptions on collision-based hash functions, this solution isn't vulnerable to post-quantum attacks.
+%
+For cryptocurrencies, ZK-STARK has great practical value to scaling transaction throughput and achieving privacy-preserving transactions. 
 
 \subsection{Problem Significance}
-Guidelines: Here you should explain why the problem targeted by the paper is important and has value.
+Zero-knowledge proof could be used to address many trust issues in our daily life.
 %
-In particular, what is the motivation of this paper?
+In this paper, authors utilize a DNA profile match (DPM) example as a special case.
+%
+Nowadays, governments usually play a role of a trusted third party to claim some statements or survey results are true.
+%
+However, due to the lack of enough convincing evidence (these materials might be related to privacy issues), the public might question the validation of results. 
+%
+In this scenario, zero-knowledge proof could be viewed as a powerful tool to persuade the public of those issues with confidentiality requirement.
 
 
 \subsection{State of the Art}
+Summarizing, systems for ensuring computational integrity over confidential data possess the following six core virtues:
 
-Guidelines: Here you should describe the state of the art as reflected in the paper at that time.
-%
+\begin{itemize}
+    \item \textbf{Transparency} It means proving process doesn't need any trusted third party.
+    \item \textbf{Universality} The system could be applied to any efficient computation.
+    \item \textbf{Confidentiality} The proof doesn't leak any other information except for witnesses.
+    \item \textbf{Post-quantum Security} Many cryptographic assumptions start to crumble once quantum computers become scalable.
+    \item \textbf{Proof/Argument of Knowledge} The proof could valid the statements efficiently.
+    \item \textbf{Scalable Verification} Verifier could valid the witnesses in a short time.
+\end{itemize}
 
+From the perspective of the above six properties, the existing solutions can be summarized as follows:
 
+\begin{itemize}
+    \item \textbf{Homomorphic public-key cryptography (kPKC):} ZK-SNARk is a classical zk system based on this theorem, which serves in ZeroCoin and ZeroCash system for privacy-preserving transactions.
+    Compared to ZK-STARK, hPKC methods lack transparency and post-quantum security. But verification time in hPKC is scalable. 
+    \item \textbf{Discrete logarithm problem (DLP):} The approach based on DLP has advantages on its succinct proof size and no trusted setup phase.
+    However, due to broken DLP under quantum factoring algorithms, this method is actually quantum-susceptible. And verifier needs much resources to valid the proof.  
+    \item \textbf{Interactive Proofs (IP) based:} Like BulletProofs, these IP-based solutions are also quantum-susceptible and overlong verification time.
+    \item \textbf{Secure multi-party computation (MPC):} Although MPC-based approaches are posy-quantum secure, transparent and have quasi-linear proving time, it can not render a scalable verification algorithm and a succinct proof.
+    \item \textbf{Incrementally verifiable computaion (IVC):} This scheme could build on top of other proof systems and hence inherit internal properties of these systems.
+\end{itemize}
 
 \subsection{Contributions}
-Guidelines: Here you should summarize the contributions of the paper in your own words.
+As for verifying computational integrity, the naive solution is to let verifiers re-execute programs again which is time-consuming and impractical.
 %
-For example, you may evaluate the contributions from the following perspectives: novelty of problem formulation, novelty of the technical solution, depth of theoretical analysis of the technical solution, positiveness of experimental evaluation result, etc.
+Especially, when the database involves some sensitive information (e.g. DNA profiles, personal particulars), this naive method won't work any more.
+%
+Under this circumstance, a trusted third party is introduced to play a role as a warranter.
+%
+However, due to unexpected attacks or corruption, this third party can't work well all the time.
+%
+Therefore, zkp systems are proposed to balance the tension between data privacy and computational integrity.
+
+ZK-STARK is a novel zero-knowledge system which renders scalable proving and verifying algorithms without any trusted setup phase.
+%
+In particular, provers need to execute O($t{\times}log(t)$) steps to generate a proof and verifiers would cost the time of O(${log}^2(t)$) steps to validate the proof.
+
+Despite the details of the whole system are obscure and complicated, the general idea is to convince verifiers just checking relatively low degree polynomial instead of the whole structure by employing FRI scheme.
 
 \subsection{Remaining Questions}
-Guidelines: Here you should try to discuss any remaining questions to be solved or any possible future directions based on the result of the paper.
+Compared to ZK-SNARK, the short coming of ZK-STARK is long proof size and verification time.
+%
+Whether this ideal approach could be improved further still remains an open question. 
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
