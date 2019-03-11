@@ -27,13 +27,13 @@ ID: 56064832}
 
 
 \subsection{Problem Statement}
-This survey paper targets on a systematic summary of privacy and security issues in Bitcoin.
+This survey paper targets at a systematic summary of privacy and security issues in Bitcoin.
 %
 To be more specific, the authors firstly present a overview of its workflow and protocols. 
 %
-From perspectives of system security and privacy, they then discuss the existing vulnerabilities and countermeasures elaborately.
+From the perspective of system security and privacy, they then discuss the existing vulnerabilities and countermeasures elaborately.
 %
-By analyzing pros and cons of these possible solutions, they summarize the open questions and latent research directions of blockchain.
+By analyzing pros and cons of these possible solutions, they summarize remaining questions and latent research directions of blockchain.
 
 \subsection{Problem Significance}
 Compared to other general survey papers, this paper focuses on the privacy and security issues in Bitcoin, which renders an detailed security analysis to us. 
@@ -44,17 +44,17 @@ Apart from double spending, there are also many other types of attacks on Bitcoi
 According to the tutorials taught by TA and the descriptions in paper, I conclude these attacks as follows:
 %
 \begin{enumerate}[label=(\roman*)]
-   \item  \textbf{Double Spending.} Although Satoshi Nakamoto claimed that double spending problems can be avoided in a high probability based on the assumption of majority honest nodes.
-   However, this classical problem in cryptocurrency could still happen possibly by following a specific workflow.
+   \item  \textbf{Double Spending.} Satoshi Nakamoto claimed that double spending problems can be avoided with a high probability \cite{nakamoto2008bitcoin} based on the assumption of majority honest nodes.
+   However, this classical problem in cryptocurrency could still happen possibly by following some specific workflows.
    For example, two partial confirmations on the same unspent money might lead to a successful double spending. 
    
-   For my point of view, it is very necessary for recipients to wait seven blocks to get a global confirmation.
-   But if the computational power of adversaries takes up a large proportion, waiting for multiple confirmations could still fail.
-   Except for the power of CPU, some other factors like network propagation delay, exchange service connectivity and node position in network also could bring about a double-spending.
-   \item  \textbf{Mining Pool Attacks.} Due to the highly concentrated power of mining pool, it could easily lead to a selfish mining or 51$\%$ attack.
+   Therefore, it is very necessary for recipients to wait for seven blocks to get a global confirmation.
+   (But if the computational power of adversaries takes up a large proportion, waiting for multiple confirmations could still fail.)
+   Except for the power of CPU, some other factors like network propagation delay, exchange service connectivity and node position in network could also bring about a double-spending.
+   \item  \textbf{Mining Pool Attacks.} Due to the highly concentrated power, mining pools could easily launch a selfish mining or 51$\%$ attack.
    Another scenario is called Pool Hopping attack. Adversaries might collect the submitted shares from fellow miners and avoid these invalid attempts.
    What's more, bribery attacks would involve multi-party game.
-   \item \textbf{Client-side Threats.} Threat model in this part is related to key management techniques.
+   \item \textbf{Client-side Threats.} Threat model in this part is related to key management and cryptographic  schemes.
    In particular, Bitcoin adopts elliptic curve digital signature algorithm (ECDSA) to ensure the security of transactions.
    However, this signature scheme has some potential treats (e.g. collision attack) and current system has no migration plans for broken cryptographic scheme.
    And there are many third-party wallets targeting to address the tension between usability and security at the Bitcoin client.  
@@ -68,7 +68,7 @@ The key problem lies in its consensus protocol called Proof-of-Work (PoW).
 %
 Therefore, many variants of PoW are proposed to address security issues in a new way of generating and verifying a new block.
 %
-Despite these schemes solve specific problems in Bitcoin, they usually rely on some strong assumptions and also bring about new troubles.
+Despite these schemes solve specific problems in Bitcoin, they usually rely on some strong assumptions or bring about new troubles.
 %
 For example, although Proof-of-Elapsed-Time avoids resources waste successfully, it incurs stale and broken chip problems.
 
@@ -114,7 +114,7 @@ This paper mainly focuses on the privacy and security issues of Bitcoin and cond
 \subsection{Remaining Questions}
 The domain of this paper is only limited to the security and privacy perspective of Bitcoin.
 %
-Other cryptocurrency like Ethereum, which firstly introduces the smart contract, has many different threats and challenges.
+Other cryptocurrency like Ethereum, which firstly introduces the smart contract in blockchain systems, has many distinct threats and challenges.
 %
 And how to effectively balance the tensions in these cryptocurrencies still remains an open question.
 
@@ -125,7 +125,7 @@ And how to effectively balance the tensions in these cryptocurrencies still rema
 \subsection{Problem Statement}
 This paper presents a zero-knowledge (ZK) proof system which enables verifiable computation with strong confidentiality.
 %
-Compared to ZK-SNARK system, ZK-STARK has no reliance on a trusted third party to generate its initial proving key.
+Compared to ZK-SNARK system \cite{ben2013snarks}, ZK-STARK has no reliance on a trusted third party to generate its initial proving key.
 %
 What's more, with assumptions on collision-based hash functions, this solution isn't vulnerable to post-quantum attacks.
 %
@@ -158,10 +158,10 @@ Summarizing, systems for ensuring computational integrity over confidential data
 From the perspective of the above six properties, the existing solutions can be summarized as follows:
 
 \begin{itemize}
-    \item \textbf{Homomorphic public-key cryptography (hPKC):} ZK-SNARk is a classical zk system based on this theorem, which serves in ZeroCoin and ZeroCash system for privacy-preserving transactions.
-    Compared to ZK-STARK, hPKC methods lack transparency and post-quantum security. But verification time in hPKC is scalable. 
+    \item \textbf{Homomorphic public-key cryptography (hPKC):} ZK-SNARK is a classical zk system based on this theorem, which serves in ZeroCoin \cite{miers2013zerocoin} and ZeroCash \cite{sasson2014zerocash} system for privacy-preserving transactions.
+    In general, hPKC methods lack transparency and post-quantum security. But in comparison with zk-STARK, verification time in hPKC is scalable. 
     \item \textbf{Discrete logarithm problem (DLP):} The approach based on DLP has advantages on its succinct proof size and no trusted setup phase.
-    However, due to broken DLP under quantum factoring algorithms, this method is actually quantum-susceptible. And verifier needs much resources to valid the proof.  
+    However, due to broken DLP under quantum factoring algorithms, this method is actually quantum-susceptible. And verifier needs massive of resources to valid the proof.  
     \item \textbf{Interactive Proofs (IP) based:} Like BulletProofs, these IP-based solutions are also quantum-susceptible and overlong verification time.
     \item \textbf{Secure multi-party computation (MPC):} Although MPC-based approaches are posy-quantum secure, transparent and have quasi-linear proving time, it can not render a scalable verification algorithm and a succinct proof.
     \item \textbf{Incrementally verifiable computaion (IVC):} This scheme could build on top of other proof systems and hence inherit internal properties of these systems.
