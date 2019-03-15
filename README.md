@@ -1,5 +1,5 @@
 # **Blockchain Technology**
-This is my reading assignments in Class CS6290 Privacy-enhancing Technologies. The instructor is Dr. [Cong Wang](http://www.cs.cityu.edu.hk/~congwang/).
+This is my reading assignments in Class CS6290 Blockchain Technologies. The instructor is Dr. [Cong Wang](http://www.cs.cityu.edu.hk/~congwang/).
 
 ## **Reading List of Assignment One**
 
