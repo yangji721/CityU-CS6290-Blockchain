@@ -1,7 +1,7 @@
 # **Blockchain Technology**
 This is my reading assignments in Class CS6290 Blockchain Technologies. The instructor is Dr. [Cong Wang](http://www.cs.cityu.edu.hk/~congwang/).
 
-## **Reading List of Assignment One**
+## **Cryptocurrency system structure and workflow**
 
 - **[SoK: Research Perspectives and Challenges for Bitcoin and Cryptocurrencies](http://www.jbonneau.com/doc/BMCNKF15-IEEESP-bitcoin.pdf)**. Bonneau J, Miller A, Clark J, Narayanan A, Kroll JA, Felten EW. S&P '15.
 
@@ -15,7 +15,7 @@ This is my reading assignments in Class CS6290 Blockchain Technologies. The inst
 
 - **[Blockchains from a Distributed Computing Perspective](https://cacm.acm.org/magazines/2019/2/234355-blockchains-from-a-distributed-computing-perspective/fulltext)**. Maurice Herlihy '19
 
-## **Reading List of Assignment Two**
+## **Blockchain consensus algorithm and scalability**
 
 - **[Algorand: Scaling Byzantine Agreements for Cryptocurrencies](https://people.csail.mit.edu/nickolai/papers/gilad-algorand-eprint.pdf)**. Yossi Gilad, Rotem Hemo, Silvio Micali, Georgios Vlachos, Nickolai Zeldovich '17
 
@@ -48,6 +48,32 @@ This is my reading assignments in Class CS6290 Blockchain Technologies. The inst
 - **[Snow White: Robustly Reconfigurable Consensus and Applications to Provably Secure Proofs of Stake](https://eprint.iacr.org/2016/919.pdf)**. Phil Daian, Rafael Pass and Elaine Sh '16
 
 - **[A scalable verification solution for blockchains](https://people.cs.uchicago.edu/~teutsch/papers/truebit.pdf)**. Jason Teutsch and Christian Reitwiener '17
+
+## **Blockchain Privacy and Security**
+
+- **[A survey of attacks on Ethereum smart contracts](https://eprint.iacr.org/2016/1007.pdf)**. Nicola Atzei, Massimo Bartoletti, and Tiziana Cimoli '16
+
+- **[A Survey on Security and Privacy Issues of Bitcoin ](https://ieeexplore.ieee.org/document/8369416)**. Mauro Conti '18
+
+- **[Bulletproofs:  Short Proofs for Confidential Transactions and More](https://eprint.iacr.org/2017/1066.pdf)**. Benedikt B¨unz '17
+
+- **[Eclipse Attacks on Bitcoin’s Peer-to-Peer Network](https://eprint.iacr.org/2015/263.pdf)**. Ethan Heilman '15
+
+- **[Ekiden: A Platform for Confidentiality-Preserving,Trustworthy, and Performant Smart Contracts](https://arxiv.org/abs/1804.05141)**. Raymond Cheng '18
+
+- **[The Ring of Gyges: Investigating the Future of Criminal Smart Contracts](https://www.initc3.org/files/Gyges.pdf)**. Ari Juels '16
+
+- **[Hawk: The Blockchain Model of Cryptography andPrivacy-Preserving Smart Contracts](https://ieeexplore.ieee.org/document/7546538)**. Ahmed Kosba '16
+
+- **[Enter the Hydra: Towards Principled Bug Bounties and Exploit-ResistantSmart Contracts](https://eprint.iacr.org/2017/1090.pdf)**. Lorenz Breidenbach '17
+
+- **[Majority is not Enough:Bitcoin Mining is Vulnerable](https://www.cs.cornell.edu/~ie53/publications/btcProcFC.pdf)**. Ittay Eyal and Emin G¨un Sirer '13
+
+- **[Quantitative Analysis of the Full BitcoinTransaction Graph](https://eprint.iacr.org/2012/584.pdf)**. Dorit Ron and Adi Shamir '12
+
+- **[Zerocash:  Decentralized Anonymous Payments from Bitcoin](http://zerocash-project.org/media/pdf/zerocash-oakland2014.pdf)**. Eli Ben-Sasson '14 
+
+- **[Scalable, transparent, and post-quantum secure computationalintegrity](https://eprint.iacr.org/2018/046.pdf)**. Eli Ben-Sasson '18 
 
 ## License
 
