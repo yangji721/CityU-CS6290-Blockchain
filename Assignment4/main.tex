@@ -73,12 +73,12 @@ For example, workers' submitted answers are exposed to other peers who can simpl
 %
 For another thing, totally transparency could cause misbehaviors by colluded counterfeit identities.
 
-%\begin{figure}[ht]
-%    \centering
-%    \includegraphics[width= 0.95\linewidth]{fig/PBFT.png}
-%    \caption{Normal Case Operations}
-%    \label{pbft}
-%\end{figure}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width= 0.95\linewidth]{fig/system1.pdf}
+    \caption{Model of decentralized crowdsourcing system}
+    \label{arch}
+\end{figure}
 
 \subsection{Contributions}
 The model of data crowdsourcing consists of four components:
@@ -114,87 +114,109 @@ Firstly, I think requesters don't need to hash their secret keys in the head whi
 %
 Secondly, the experiment results show that incentive policy is quite simple which only costs 10ms for verification.
 %
-Thirdly, zkSNARK needs a trusted setup phase to generate proving and verifying key ,which means more work for Registration Authority.
+Thirdly, zk-SNARK needs a trusted setup phase to generate proving and verifying key ,which means more work for Registration Authority.
 
 
-\section{Summary of Paper\cite{croman2016scaling}}
+\section{Summary of Paper\cite{tramer2017sealed}}
 
 \subsection{Problem Statement}
-This paper tries to explain and analyze the possible solutions on efficiently scaling current blockchain systems, including parameter tuning and reconstruction of a scalable blockchain.
+Recent years have witnessed an unprecedented increase in applications of trusted hardware systems like Intel Software Guard extension (SGX).
+%
+SGX is designed to ensure the faithful execution and data confidentiality of user-level codes through hardware protection.
+%
+Recent studies, however, raise the widespread concerns of the security of SGX.
+%
+Since there exist some resources which are shared between enclaves and untrusted hosts, the perfect isolation is broken causing by various side channel attacks.
+
+Based on this background, the authors aim to find possible applications in practice using SGX without any confidentiality requirement.
 
 \subsection{Problem Significance}
-As a cryptocurrency system, current blockchain needs to improve the capacity of dealing with transactions.
+Emerging attacks on state confidentiality of SGX make the original security requirement challenging.
 %
-Take Bitcoin as an example.
+And it seems that there are no efficient attacks working on the faithful execution of programs inside enclaves.
 %
-In Bitcoin network, miners need 10 minutes or more to publish a new block and confirm 7 transactions per second at most.
+For the first in the literature, the authors propose the model called \textsl{transparent enclave execution}, wherein computational integrity is guaranteed without data confidentiality.
 %
-In comparison, visa credit card which is a mainstream payment processor can deal with about 2000 transactions per second.
-%
-The huge gap between blockchain system and traditional payment processor incentivizes blockchain developers to rethink how to scale up network efficiently.
+What's more, they also explore what functionality could be realized atop it.
 
-\subsection{State of the Art}
-This article reviews the current technologies on scaling blockchains from two perspectives.
-%
-For one thing, reparameterization of block size and intervals can be viewed as a temporary and limited approach to more scalable blockchains.
-%
-For another thing, a radical reconstruction of blockchain systems might be the fundamental solutions on scaling up the throughput of blockchains.  
-%
-Before concluding the analysis of these approaches, I firstly will introduce some preliminaries on network measurement.
 
 \subsection{Preliminaries}
-
-\subsubsection{Maximum Throughput} It describes the maximum quantity of transactions which blockchains could confirm. In general, it is mainly adjusted by the block size and inter-block intervals.
-
-\subsubsection{Latency} Based on the pre-defined consensus protocol, a new block containing variety of transactions needs to wait for around 10 minutes to be confirmed determinately.
-
-\subsubsection{Bootstrap Time} It records the time that a newly joint node needs to prepare for validating the current network status. For Bitcoin, this time is roughly 4 days.
-
-\subsubsection{Cost per Confirmed Transaction (CPCT)} CPCT represents the average cost of confirming a new transaction in the form of USD. 
+In this part, I briefly recap the basic functions and principles of Intel SGX.
 %
-In more details, the cost could derive from the following four sources: (i) Mining (ii) Transaction validation (iii) Bandwidth (iv) Storage.
+As aforementioned, SGX enables the creation of "isolated software enclaves" which are designed for providing the confidentiality, integrity and authenticity of program execution even when operating systems are compromised.
 
-\subsubsection{X$\%$ Effective Throughput} Here, authors define this concept as (block size) / (X$\%$ block propagation delay) which means that (100-X)$\%$ of the nodes in the network are unable to receive blocks correctly.
+In general, SGX allows remote entities to verify its generated attestation which proves the secure running of the programs in the enclave.
+%
+When first initialized, the CPU would generate a hash of the original state, namely \textsl{measurement}.
+%
+Then SGX uses its physically protected key, and a group signature scheme named \textsl{Enhanced Privacy ID} to produce a corresponding attestation.
+%
+Remote entities could get to know that the measured software is indeed running in SGX-protected enclaves.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width= 0.95\linewidth]{fig/system2.jpg}
+    \caption{End-to-end bug-bounty system}
+    \label{e2e}
+\end{figure}
+
+\subsection{State of the Art}
+No previous works do with SGX without confidentiality.
+
+As for verifiable computation and zero-knowledge proofs, many advances, like zk-SNARKs and garbled circuits, have been achieved recently.
+%
+Compared to this transparent enclave, these methods only support limited programs to be transformed into polynomials in the form of quadratic arithmetic programs.
+
+In the knowledge marketplace, "Zero-Knowledge Contingent Protocol" is proposed to realize the fair exchange between knowledge and rewards by using blockchain.
+%
+Basic procedures could be described as follows:
+\begin{itemize}
+    \item \textit{Public predicate:} Buyer publishes a transaction to collect targeted answers from the public.
+    \item \textit{Create offer:} Seller then generates and sends a tuple offer$(\pi,h,c)$, where $\pi$ means a zk-proof of correct answers, $h$ denotes the hash of secret key $k$ and $c$ represents the encryption of input answers under $k$.
+    \item \textit{Post conditional transactions:} After verifying the correctness of the tuple, buyer could send a \textit{hashlock} function to the blockchain.
+    \item \textit{Claim reward:} Using the real key, seller could obtain his/her rewards.
+    \item \textit{Recover up:} Last, seller could use this secret key to decrypt the previous answer.
+\end{itemize}
+
+The authors mainly argue that zk arguments are prohibitively constructed and become impractical in the real marketplace.
+%
+What's more, buyer could still cancel the transaction after knowing the existence of the answer (might be a bug in the software). 
 
 \subsection{Contributions}
-
-\subsubsection{Parameter Tuning} 
-To be more precise, we could adjust the block size (decides to contain how many transactions in each block) and inter-block intervals actually. 
+In this work, the authors aim at realizing a strong proof system called sealed-glass proof (SGP) which can be used to generalize ZK proofs, commitment schemes and verifiable computing.
 %
-However, we can't increase the block size and reduce intervals infinitely.
-%
-In order to keep the property of decentralization in the whole system, X$\%$ effective throughput should be at a relatively high level.
-%
-In other words, if X is fixed on 90, what we could do is just to increase the block size or reduce the inter-block intervals unilaterally.
-%
-And there exists two main limits on current overlay network:
+This transparent enclaves could be deployed securely in the system model wherein parties are untrusted to each other and have inherent resource asymmetry.
 
-\begin{itemize}
-    \item \textbf{Throughput Limit.} Assume that the inter-block interval is 10 minutes, the block size should not exceed 4MB which can support up to 27 transactions per sec.
-    \item \textbf{Latency Limit.} In order to thoroughly employ the bandwidth of the network, the block intervals should be smaller than 12 second.
-\end{itemize}
+Here, I take bug bounty platform like the SQL injection as an example.
+%
+In this case, the program should randomly initialize a user database fro sellers and check whether they could use exploits to login in this database.
+%
+The first problem is that since the enclave ti totally transparent, finding an exploit is very trivial if the whole database is first deployed.
+%
+Therefore, sellers should provide the knowledge of exploit by using commitment before the database is populated.
 
-\subsubsection{Hierarchical Design of a Scalable Blockchain}
-The paper concludes this design from five perspectives: Network, Consensus, Storage, View and Side planes.
-
-\begin{itemize}
-    \item \textbf{Network Plane.} The main reason for latency in Bitcoin is the duplex transmissions at the node level. 
-    Nodes need to validate local transactions before publishing this new block.
-    A set reconciliation protocol and a centralized, high-speed relay network specially for miners' communication can be possible approaches to this problem.
-    \item \textbf{Consensus Plane.} This network plane is aimed to achieve the consensus in the whole network. 
-    Many alternatives can substitute PoW protocol to improve the network performance, like GHOST, PoS et al.
-    It is worth nothing that sharding (splitting up the problem of consensus) or delegation of trusted and hierarchical sidechains might be a potential solution.
-    \item \textbf{Storage Plane.} It provides the storage service for the consensus plane. Operations might include writing, deleting and reading.
-    \item \textbf{View Plane.} Authors put forward two potential approaches including nodes replication and data outsourcing.
-    \item \textbf{Side Plane.} Side plane provides a off-chain method to realize the payment in a more efficient manner. 
-    Through pre-established channels, it solves the inherent problems by introducing a centralized approach.
-\end{itemize}
+By using SGP, we can realize the proof of the knowledge.
+%
+Then another building block is about how to realize the fair exchange between sellers and buyers.
+%
+As has been discussed in the state-of-the-art part, ZKCP protocol could not be employed directly here.
+%
+This paper mainly propose an end-to-end bug-bounty system wherein SGP is running between the seller and the contract.
+%
+The system architecture is described in Figure\ref{e2e}.
+%
+It is worth nothing that we can't run the smart contract directly since its state is totally transparent.
+%
+On the contrary, smart contract could verify the attestation and send pre-defined rewards faithfully.
+%
+Through encrypting answers under buyer's public key, this system also achieves data confidentiality at the same time.
 
 \subsection{Remaining Questions}
-Although with these potential solutions on scaling up the blockchain system, it still remains a huge challenge of coordinating the whole system in an efficient manner.
+This paper doesn't target on detailed reward policy.
 %
-What's more, how to persuade the majority to accept a hard fork is another difficult task for the community. 
+Since in the real knowledge marketplace, the number of sellers is not limited to just one.
+%
+How to make sure that rewards are faithfully allocated and support more complex reward polices still remains a question. 
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
