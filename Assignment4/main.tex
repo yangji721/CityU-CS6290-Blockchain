@@ -45,13 +45,13 @@ In practice, the reduction of the reliance on a trusted third-party is desirable
 \subsubsection{Crowdsourcing System}
 Crowdsourcing is a common business model which empowers open and wide collaboration over the Internet with lower cost and high scalability.
 %
-In the classical crowdsourcing system, requesters need to adopt reasonable incentive policies to motivate workers' participation.
+In the standard crowdsourcing system, requesters need to adopt reasonable incentive policies to encourage workers' participation.
 %
 To ensure the fair exchange, a trusted third party is usually used to host crowdsourcing tasks and help resolve the dispute.
 %
 
 \subsection{State of the Art}
-To solve the above problems, we could employ open blockchain to remove a trusted third-party and realize a decentralized crowdsourcing system.
+To solve the above problems, we could employ open blockchains to remove a trusted third-party and realize a decentralized crowdsourcing system.
 %
 Blockchain has many valuable features which can help remove the trusted arbiter safely. 
 %
@@ -97,24 +97,24 @@ The authors define existing problems of decentralized crowdsourcing systems as f
 
 To settle the first treat, the authors enforce the workers to encrypt their submitted answers under the requester's public key, which means only the requester of this task could decrypt these answers.
 %
-But this leads to a new problem for smart contract because encryption prevents smart contract from enforcing the incentive policy and requesters can't put their secret keys into the smart contract.
+But this leads to a new problem for smart contract because encryption prevents smart contract from executing the incentive policy and requesters can't put their secret keys on the smart contract directly.
 %
-In this paper, the authors leverage a zero-knowledge tool called zk-SNARK to realize a proving and verifying mechanism to enforce the fairness.
+In this paper, the authors leverage a zero-knowledge cryptographic tool called zk-SNARK to realize a proving and verifying mechanism to guarantee the fairness in exchange.
 %
-In more detail, the requester need to generate a zero-knowledge proof of his/her faithful computation and smart contract could verify this succinct proof expediently.
+In more detail, the requester needs to generate a zero-knowledge proof of his/her faithful computation and smart contract could verify this succinct proof expediently.
 
 For the second security issue, the authors create a common-prefix-linkable anonymous authentication scheme to keep sure that users could submit anonymous answers once for one task.
 %
-Once a particular worker submits his/her answer more than once, smart contract can link these submissions together ,which could prevent the misuse of anonymity efficiently.
+Once a particular worker submits his/her answer more than once, smart contract can link these submissions together, which could prevent the misuse of anonymity efficiently.
 %
-The detailed solution is to append a prefix string to every submission which corresponds to each task.
+The detailed solution is to append a prefix string to each submission which corresponds to each task.
 
 \subsection{Remaining Questions}
-Firstly, I think requesters don't need to hash their secret keys in the head which seems useless in the whole scheme construction.
+Firstly, I think requesters don't need to hash their secret keys in the head which seems redundant in the whole scheme construction.
 %
 Secondly, the experiment results show that incentive policy is quite simple which only costs 10ms for verification.
 %
-Thirdly, zk-SNARK needs a trusted setup phase to generate proving and verifying key ,which means more work for Registration Authority.
+Thirdly, zk-SNARK needs a trusted setup phase to generate proving and verifying key ,which means more dependencies on Registration Authority.
 
 
 \section{Summary of Paper\cite{tramer2017sealed}}
@@ -163,7 +163,7 @@ Remote entities could get to know that the measured software is indeed running i
 \subsection{State of the Art}
 No previous works do with SGX without confidentiality.
 
-As for verifiable computation and zero-knowledge proofs, many advances, like zk-SNARKs and garbled circuits, have been achieved recently.
+As for verifiable computation and zero-knowledge proofs, many advances, like zk-SNARKs\cite{ben2013snarks} and garbled circuits\cite{huang2011faster}, have been achieved recently.
 %
 Compared to this transparent enclave, these methods only support limited programs to be transformed into polynomials in the form of quadratic arithmetic programs.
 
@@ -189,15 +189,15 @@ This transparent enclaves could be deployed securely in the system model wherein
 
 Here, I take bug bounty platform like the SQL injection as an example.
 %
-In this case, the program should randomly initialize a user database fro sellers and check whether they could use exploits to login in this database.
+In this case, the program should randomly initialize a user database for sellers and check whether they could use exploits to login in this database.
 %
-The first problem is that since the enclave ti totally transparent, finding an exploit is very trivial if the whole database is first deployed.
+The first problem is that since the enclave is totally transparent, finding an exploit is very trivial if the whole database is first deployed.
 %
 Therefore, sellers should provide the knowledge of exploit by using commitment before the database is populated.
-
-By using SGP, we can realize the proof of the knowledge.
 %
-Then another building block is about how to realize the fair exchange between sellers and buyers.
+By using SGP, we can realize the proof of the knowledge.
+
+Another building block is about how to realize the fair exchange between sellers and buyers.
 %
 As has been discussed in the state-of-the-art part, ZKCP protocol could not be employed directly here.
 %
@@ -212,11 +212,9 @@ On the contrary, smart contract could verify the attestation and send pre-define
 Through encrypting answers under buyer's public key, this system also achieves data confidentiality at the same time.
 
 \subsection{Remaining Questions}
-This paper doesn't target on detailed reward policy.
+This paper doesn't target on the complexity of reward policies in the real knowledge marketplace.
 %
-Since in the real knowledge marketplace, the number of sellers is not limited to just one.
-%
-How to make sure that rewards are faithfully allocated and support more complex reward polices still remains a question. 
+Whether this proposition could support more complicated reward policy still remains a question. 
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
