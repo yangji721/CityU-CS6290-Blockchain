@@ -75,6 +75,27 @@ This is my reading assignments in Class CS6290 Blockchain Technologies. The inst
 
 - **[Scalable, transparent, and post-quantum secure computationalintegrity](https://eprint.iacr.org/2018/046.pdf)**. Eli Ben-Sasson '18 
 
+## **Applications and Secure Contract Programming**
+
+- **[Airtnt: Fair Exchange Payment for Outsourced Secure EnclaveComputations](https://arxiv.org/abs/1805.06411)**. Mustafa Al-Bassam, Alberto Sonnino, Michał Król, Ioannis Psaras 18'
+
+- **[Betrayal, Distrust, and Rationality: Smart Counter-CollusionContracts for Verifiable Cloud Computing](https://arxiv.org/abs/1708.01171)**. Changyu Dong, Yilei Wang, Amjad Aldweesh, Patrick McCorry, Aad van Moorsel 17'
+
+- **[Blockstack: A Global Naming and Storage System Secured by Blockchains](https://www.usenix.org/node/196209)**. Muneeb Ali and Jude Nelson 16'
+
+- **[Catena: Efficient Non-equivocation via Bitcoin](https://people.csail.mit.edu/devadas/pubs/catena.pdf)**. Alin Tomescu and Srinivas Devadas 17'
+
+- **[Sealed-Glass Proofs:Using Transparent Enclaves to Prove and Sell Knowledge](https://ieeexplore.ieee.org/abstract/document/7961949)**. Florian Tramèr, Fan Zhang, Huang Lin, Jean-Pierre Hubaux, Ari Juels, Elaine Shi 17'
+
+- **[Solidus:Confidential Distributed Ledger Transactions via PVORM](https://eprint.iacr.org/2017/317.pdf)**. Ethan Cecchetti Fan Zhang 17'
+
+- **[Tesseract: Real-Time Cryptocurrency Exchange Using Trusted Hardware](https://eprint.iacr.org/2017/1153.pdf)**. Iddo Bentov Yan Ji 17'
+
+- **[ZebraLancer: Private and AnonymousCrowdsourcing System atop Open Blockchain](https://ieeexplore.ieee.org/document/8416350)**. Yuan Lu, Qiang Tang, Guiling Wang 18'
+
+## **About Assignment**
+I conduct the summary of two papers in each section.
+
 ## License
 
 [![CC-BY 4.0](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by.svg)](http://creativecommons.org/licenses/by/4.0/)
