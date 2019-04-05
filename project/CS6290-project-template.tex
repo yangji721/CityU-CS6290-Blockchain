@@ -6,11 +6,14 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usetikzlibrary{backgrounds,calc,decorations.pathreplacing,fit,matrix,patterns,positioning,shapes,shapes.multipart}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{An Investigation into Search over Outsourced Encrypted Data}
+\title{An Investigation into Stateless Blockchain}
 
 \author{\IEEEauthorblockN{Student A}
 \IEEEauthorblockA{Dept. of Computer Science \\
@@ -31,60 +34,118 @@ ID:12341000}
 
 
 \section{Introduction}
-Guidelines: In this section, you should abstract your target problem and present your motivation.
-For example, you may highlight the practical motivation for encrypted search from your literature search. 
+Recent years have witnessed the prosperity of cryptocurrencies which seek for more efficient and secure financial
+transactions through removing trusted third parties like escrows and banks~\cite{SongWP00}.
 %
-Meanwhile, you may categorize the typical research directions in the field of encrypted search (e.g., dynamic encrypted search, boolean encrypted search, and encrypted ranked search).
+As their underlying technology, blockchain enables users to broadcast and confirm asynchronous transactions securely in an untrusted environment.
 %
-Further, you may present any particular security/practicality considerations on designing an encrypted search scheme.
+In order to achieve this, nodes in blockchain systems need to validate broadcasted transactions by querying the current system \textit{state}.
+%
+To be more specific, this state can be available by storing subsequent ordered blocks from the genesis block in local.
+
+However, due to the ever-growing nature of the blockchain systems, the storage requirement is increasing linearly with the ledger length.
+%
+This restricted condition entails taking much storage space and time to download and maintain the entire history of blockchains.
+%
+For example, a new full node that wants to join in the Ethereum network and acquires the correct ledger \textit{state} needs to download 132.57 GB of data~\cite{Ethereumstorage} currently. 
+
+As the emerging concerns on chain data size in the developer community, the concept of `stateless' blockchain has received considerable interests nowadays.
+%
+This concept is derived from a personal blog~\cite{delayed-txo-commitments}, which is proposed to avoid storing the whole state in an accumulative manner.
+%
+Unfortunately, realizing a blockchain system with lessened storage requirement is a quite difficult task due to many challenges.
+
+For one thing, maintaining a public ledger in a decentralized system entails the duties of validating and broadcasting transaction on each node.
+%
+In order to check the validation of each transaction, nodes must store the current ledger \textit{state} that determines the ownership of existing assets.
+%
+For instance, the \textit{state} of Bitcoin is a data set of unspent transaction outputs (UTXOs). 
+%
+In order to check the validation of transactions, nodes should confirm that spent coin belongs to UTXO set locally.
+%
+In other words, nodes without storing UTXO set can't validate the incoming transactions.
+
+For another thing, sharding or commitment schemes are viewed as effective methods to reduce the storage cost on each node.
+%
+In these ways, nodes could verify transactions by checking the membership proofs provided by issuers.
+%
+However, these solutions are actually at the cost of communication overhead across the system.
+%
+And high communication overhead would inevitably lead to the low scalability and throughput of the entire network, which is against the principles of cryptocurrencies.
+%
+How to leverage these tools to realize a cryptocurrency protocol is a challenging open question in blockchain community.
+
+With these unresolved problems, I conduct an investigation into state-of-the-art solutions of stateless blockchain in this paper.
+%
+By categorizing existing literatures, I
+%
+I then pick up some important literatures and explain their algorithms in more detail.
+%
+By providing comprehensive evaluations for these methods, 
+
+The rest of this paper is organized as follows: 
 
 
-
-
-If you want to use existing paper’s observations, please cite it like “In Song et al.'s work \cite{SongWP00}, the notion of searchable encryption is introduced for the first time.”
-
-
-
-You can use figures/tables for illustration of your findings/ideas throughout the report. Table 1 and Fig. 1 are provided as examples.
-
-
-
+\begin{figure}[t]
+  \centering
+  \resizebox{0.7\linewidth}{!}{\input{figs/model.tex}}
+  \caption{System Architecture}\label{fig:model}
+\end{figure}
 
 \section{Application Setting}
-
 \subsection{System Architecture}
-Guidelines: In this subsection, you should describe the general application setting of encrypted search, e.g., how many parties are there in the real application setting, the particular role of each party, and the participation of each party (i.e., what each party does in  the work flow).
+In this subsection, I will briefly introduce the system architecture of current blockchains.
+%
+As shown in Figure, there exist three kinds of nodes with different functionalities in a classical blockchain network:
+\textit{full nodes}, \textit{miners} and \textit{light nodes}.
+%
+To fulfill the security model, full nodes must download blocks originated from the first block all the way and validate them against consensus proof.
+%
+To be specific, a full node store all blocks including block headers and data records on the disk.
+%
+Miners are full nodes with high computational power, who could execute consensus protocol (e.g. hash puzzle in Bitcoin) and generate new blocks for money rewards.
+%
+Restricted in limited resources, a light node only needs to download block headers during the initial syncing process and then requests transactions from connected full nodes as needed.
 
-\subsection{Threat Model}
+\subsection{Stateless Blockchain}
+In the current blockchain system, locally maintaining the validation state means quite cumbersome work. 
+%
+On one hand, this high storage requirement potentially fails those users who can't dedicate large storage space to join in the network.
+%
+More than that, increasing storage requirement might also reduce the incentives for running full nodes, which could lead to possible centralization of blockchains.
+%
+On the other hand, full nodes tend to leverage database (e.g. LevelDB in geth client) to manage the entire ledger \textit{state},
+which causes expensive I/O costs and prolong the validation time.
 
-Guidelines: In this subsection, you should explain the threat assumptions generally adopted by the literature on encrypted search. For example, you may clearly indicate the trust assumptions of each party involved in the application (i.e., who is trusted or untrusted?), the goal of the untrusted party (e.g., what does the adversary want to learn?), how the adversary will behave, in a semi-honest fashion or in a malicious manner?
+Due to the above concerns, the blockchain community is eager for a well-designed protocol to tackle these issues by lessening or even removing local validation state.
+
+%\begin{table}[h]
+%\centering
+%\caption{Comparison of encrypted search schemes.}
+%\label{my-label}
+%\begin{tabular}{|l|l|l|}
+%\hline
+%Scheme & Search Complexity & Index Size \\ \hline
+%\cite{SongWP00}   & ...              & ...       \\ \hline
+%...    & ...               & ...        \\ \hline
+%\end{tabular}
+%\end{table}
+
+\section{Background on transaction validation in current blockchain systems}
 
 
-\begin{table}[h]
-\centering
-\caption{Comparison of encrypted search schemes.}
-\label{my-label}
-\begin{tabular}{|l|l|l|}
-\hline
-Scheme & Search Complexity & Index Size \\ \hline
-\cite{SongWP00}   & ...              & ...       \\ \hline
-...    & ...               & ...        \\ \hline
-\end{tabular}
-\end{table}
-
-
-\section{Research Directions of Encrypted Search}
+\section{Research Directions of Stateless Blockchain}
 %
 
 Guidelines: In this subsection, you should introduce the typical research directions for encrypted search, describe in detail the goals of each research direction in terms of functionality and/or security. You should also specify and discuss the design challenges in each direction based on your literature study and or your personal perspectives. Besides, you should properly discuss the existing works and try to reflect the state-of-the-art. A possible organization structure is given below. 
 
 
-\begin{figure}[!t]
-  \centering
-  \includegraphics[width=2in]{./fig1.png}
-  \caption{Outsourcing encrypted data to the cloud.}
-  \label{fig_model}
-\end{figure}
+%\begin{figure}[!t]
+%  \centering
+%  \includegraphics[width=2in]{./fig1.png}
+%  \caption{Outsourcing encrypted data to the cloud.}
+%  \label{fig_model}
+%\end{figure}
 
 \subsection{Basic Searchable Encryption}
 
