@@ -142,7 +142,7 @@ I will explain the details later.
   \label{trie}
 \end{figure}
 
-\subsection{Ethereum Data Storage Implementation}
+\subsection{Data Storage in Full Node}
 The core data structures which exist in Ethereum are made up of optimized Merkle Patricia Tries.
 %
 The term trie is derived from the word `Re{\textbf{tri}}eve' and the same as tree. 
@@ -201,6 +201,26 @@ Thus, each time a miner generates a new block successfully, she also needs to up
 Because Ethereum leverages smart contract to achieve reliable computation in an untrusted environment, some extra space is needed to store these contract codes permanently.
 %
 Ethereum introduces contract accounts to manage these contracts and each contract account has a separate storage trie for that.
+
+\subsection{Data Storage in Lightweight Node}
+In practice, many devices with limited computing resources and storage space can't run as a full node.
+%
+Therefore, in Bitcoin white paper\cite{nakamoto2008bitcoin}, Satoshi Nakamoto puts forward a mechanism called simplified payment verification (SPV) to simplify transaction validation.
+%
+Through utilizing this mechanism, lightweight client only needs to download all the block headers during the syncing process.
+%
+Due to the lack of validation resources, lightweight node must query network nodes to download past blocks until she convinces that she has the correct ledger state.
+
+In general, block headers contain enough information to assure that 
+\begin{enumerate}
+  \item Consensus proof (e.g. nonce) that is used to be against malicious provers.
+  \item specific transactions in blocks.
+  \item block depth used to convince the validation of transactions.
+\end{enumerate}
+
+It is worth nothing that block depth is totally opposite to block height and corresponds to the cumulative difficulty originated from the genesis block.
+%
+Once SPV client retrieves merkle branch and validates the existence of transaction in a block, she can only rely on the consensus mechanism for the security assurance. 
 
 
 \section{Research Directions of Stateless Blockchain}
