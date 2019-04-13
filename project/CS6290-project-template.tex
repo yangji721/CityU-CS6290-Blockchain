@@ -15,19 +15,10 @@
 
 \title{An Investigation into Stateless Blockchain}
 
-\author{\IEEEauthorblockN{Student A}
+\author{
+\IEEEauthorblockN{Yang Ji}
 \IEEEauthorblockA{Dept. of Computer Science \\
-ID:12341000}
-\and
-
-\IEEEauthorblockN{Student B}
-\IEEEauthorblockA{Dept. of Computer Science \\
-ID:12341000}
-\and
-
-\IEEEauthorblockN{Student C}
-\IEEEauthorblockA{Dept. of Computer Science \\
-ID:12341000}
+ID: 56064832}
 }
 
 \maketitle
@@ -131,21 +122,91 @@ Due to the above concerns, the blockchain community is eager for a well-designed
 %\end{tabular}
 %\end{table}
 
+
+
 \section{Background on transaction validation in current blockchain systems}
+In this part, I will take Ethereum as an example to untangle the intricacies in the data storage layer that exists in full nodes.
+%
+In Ethereum, developers have implemented many optimizations on the original data structure called Merkle Patricia Tries.
+%
+These data in local databases and on-chain block headers jointly contribute to the `World State' in blockchains.
+%
+What's more, the concept of `stateless' blockchain can be also applied into lightweight node. 
+%
+I will explain the details later.
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=2in]{figs/Trie.png}
+  \caption{Trie Data Structure}
+  \label{trie}
+\end{figure}
+
+\subsection{Ethereum Data Storage Implementation}
+The core data structures which exist in Ethereum are made up of optimized Merkle Patricia Tries.
+%
+The term trie is derived from the word `Re{\textbf{tri}}eve' and the same as tree. 
+%
+Trie data structure, which is also called digital tree, radix tree and prefix tree, could be used to store the dynamic maps of key-value.  
+%
+We can efficiently traverse a branch of nodes in the trie with the reference to the corresponding keys.
+%
+For example, in Figure~\ref{trie}, the sequence of English alphabet is used to comprise the key. 
+%
+In the path of retrieving the value, the same sequences are grouped together to avoid massive of wasted space.
+
+Many optimized implementations have been applied into the Ethereum's trie data structure in order to increase the search efficiency and performance.
+%
+In the Ethereum's official document, Merkle Patricia trie are defined as a cryptographically authenticated data structure that is used to store all bindings of key and value.
+%
+The hash function of each node, as I have mentioned in my first assignment before, could guarantee the data integrity and provide fast verification for users.
+%
+As for query processing, this unique data structure enables inserting, searching and deleting operations in the complexity of O(log(n)).
+%
+In engineering, some encoding schemes like Hex-Prefix encoding and Recursive Length Prefix (RLP) are also used for improving the query performance.
+%
+To conclude that, tries are enforced with cryptographic security by leveraging the hash function to reference each node.
+%
+And these tries could provide the efficient inserting, searching and deleting operations in local databases (Leveldb or Rocksdb).
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{figs/Ethereum-tree.png}
+  \caption{Ethereum Storage Layer}
+  \label{e-trie}
+\end{figure}
+
+In order to maintain the state of the whole blockchain, Ethereum blocks contain four distinct trie data structures: (1)\textit{Receipt Tree} (2)\textit{State Tree} (3)\textit{Transaction Tree} (4)\textit{Storage Tree}.
+%
+As illustrated in Figure~\ref{e-trie}, The hash roots of first three merkle patricia tries are stored in the block headers in the form of Keccak 256-bit hash value. 
+%
+The hash root of \textit{Storage Tree} is included in \textit{State Tree} with its RLP encoded data records.
+
+In more detail, \textit{Transaction Trie} is proposed to record transactions in the current block.
+%
+Thus, once the block is appended into the main chain, \textit{Transaction Trie} is also fixed and never updated.
+%
+Same as \textit{Transaction tree}, \textit{Receipt Tree} is used to record the outcome of transactions and never updated.
+%
+In Ethereum yellow paper\cite{Ethereumstorage}, \textit{Receipt Tree} could be used for zero-knowledge proofs or index and searches.
+%
+\textit{Receipt Tree} contains post-transaction state, cumulative gas used, logs and bloom filter created by the information of logs.
+%
+Different from the above trees, \textit{State Tree} records a key-value pair for each Ethereum account in an accumulative way.
+%
+\textit{State Tree} is actually only one global state tree which contains all past account information.
+%
+Thus, each time a miner generates a new block successfully, she also needs to update this global state correspondingly.
+%
+Because Ethereum leverages smart contract to achieve reliable computation in an untrusted environment, some extra space is needed to store these contract codes permanently.
+%
+Ethereum introduces contract accounts to manage these contracts and each contract account has a separate storage trie for that.
 
 
 \section{Research Directions of Stateless Blockchain}
 %
-
 Guidelines: In this subsection, you should introduce the typical research directions for encrypted search, describe in detail the goals of each research direction in terms of functionality and/or security. You should also specify and discuss the design challenges in each direction based on your literature study and or your personal perspectives. Besides, you should properly discuss the existing works and try to reflect the state-of-the-art. A possible organization structure is given below. 
 
-
-%\begin{figure}[!t]
-%  \centering
-%  \includegraphics[width=2in]{./fig1.png}
-%  \caption{Outsourcing encrypted data to the cloud.}
-%  \label{fig_model}
-%\end{figure}
 
 \subsection{Basic Searchable Encryption}
 
