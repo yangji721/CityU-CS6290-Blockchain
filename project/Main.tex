@@ -273,6 +273,13 @@ Designing new authenticated index structures should consider the following aspec
   To address this issue, we need to allow every miner to update witness freely.
 \end{itemize}
 
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=\linewidth]{figs/MMR.png}
+  \caption{Merkle Mountain Tree}
+  \label{e-trie}
+\end{figure}
+
 \textbf{Related work.}
 Peter Todd proposed Merkle Mountain Tree (MMR)~\cite{Tod} used for distributed time-stamping services atop Bitcoin in 2013. 
 %
@@ -305,7 +312,7 @@ Even though, there are still some unresolved problems in this proposal as follow
         Incentive mechanism in current blockchain systems actually requires miners to store all information in local database (even in RAM for high competitiveness).
         In my opinion, transforming all past UTXO history to TXO MMR can't alleviate this issue at all since the growth of TXO set is also unlimited (even faster).
         If a miner doesn't store TXO set locally, she might lose competitiveness against other miners.
-        In other words, competitive nodes would choose 
+        In other words, competitive nodes would choose to download all history
   \item \textbf{Incentive}
 \end{itemize}
 
