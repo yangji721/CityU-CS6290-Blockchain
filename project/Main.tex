@@ -13,7 +13,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{An Investigation into Stateless Blockchain}
+\title{An Preliminary Investigation into Stateless Blockchain}
 
 \author{
 \IEEEauthorblockN{Yang Ji}
@@ -225,10 +225,98 @@ Once SPV client retrieves merkle branch and validates the existence of transacti
 
 \section{Research Directions of Stateless Blockchain}
 %
-Guidelines: In this subsection, you should introduce the typical research directions for encrypted search, describe in detail the goals of each research direction in terms of functionality and/or security. You should also specify and discuss the design challenges in each direction based on your literature study and or your personal perspectives. Besides, you should properly discuss the existing works and try to reflect the state-of-the-art. A possible organization structure is given below. 
+The concept of `stateless blockchain' is derived from the Peter Todd's blog post~\cite{Tod,MMR} because full nodes in blockchain might validate new appending transactions without storing all past blocks originated from the genesis block.
+%
+Originally, nodes verify the correctness of new transactions by querying local databases that keep all state and history in blockchains.
+%
+To address this issue radically, nodes could only need to store a short commitment to the current state instead of storing the whole ledger state.
+%
+Thus, the issuer of transactions needs to add an assets proof for validation. 
+%
+In this way, individual nodes only need to store the a set of own UTXO/accounts along with their proofs.
+%
+These proofs are used to prove the membership or non-membership of any elements in a set.
+%
+The na\"ive accumulator is Merkle Hash Tree.
+%
+There are also other authenticated data structures that have specific optimizations.
+%
+Except for hash-based tree, vector commitment also provides the functionality of position binding.
+%
+But these two methods have their own advantages and disadvantages.
+%
+I will analyse and compare these two methods later.
+%
+Since the concept of `stateless blockchain' is quite new in related field, there are few literature studies on it.
+%
+Hence, I will explain the state-of-the-art solutions comprehensively and list the trade-offs therein.
 
 
-\subsection{Basic Searchable Encryption}
+\subsection{Hash-based Accumulator}
+\textbf{Goals.} The final purpose is to reduce the storage requirement for newly joining the network or validating the transactions.
+%
+Since the protocol and mechanism of transaction validation has changed over, original authenticated data structure (Merkle Hash Tree in Bitcoin and Merkle Patricia tree in Ethereum) should be designed again. 
+
+\textbf{Design challenges.} 
+Designing new authenticated index structures should consider the following aspects:
+
+\begin{itemize}
+  \item \textbf{Short membership/non-membership proofs.} 
+  Since stateless blockchain needs an additional field (Merkle tree branch), overlong proof size might increase communication overhead inevitably.
+  High communication overhead might lead to network latency and low the entire network throughput totally.
+  \item \textbf{Support more efficient updating and inserting.}
+  As a cryptocurrency, blockchain updates its global state frequently. Bitcoin generates a new block every 10 $\sim$ 12 minutes and in Ethereum generating a new block only needs 10 $\sim$ 15 seconds.
+  Frequent updating operations on ledger state needs users to update local information to the newest.
+  \item \textbf{Support any participant to update membership proofs.}
+  As mentioned before, pending transactions need a uncertain time to be confirmed (Or never be confirmed due to low incentive or double-spend problem).
+  However, the commitment of Merkle hash tree updates frequently, and as a result, the initial witness is not valid any more.
+  To address this issue, we need to allow every miner to update witness freely.
+\end{itemize}
+
+\textbf{Related work.}
+Peter Todd proposed Merkle Mountain Tree (MMR)~\cite{Tod} used for distributed time-stamping services atop Bitcoin in 2013. 
+%
+The data structure of MMR allows individual nodes to append new data without reconstructing the tree from scratch and keep a balanced state all the time.
+%
+As is shown in Figure~\ref{e-trie}, each time we append a subtree with new block headers, we only need to modify only a few nodes in the original tree and still keep the proof size in log\(n\).
+%
+Another advantage of this authenticated data structure is that only a tiny modifications need be done on the base of current blockchain systems.
+%
+However, this design lacks enough theoretical support including complexity analysis for updating and experimental result.
+
+Based on MMR, Todd then put forward TXO (Transaction Output) commitment as opposed to UTXO commitment.
+%
+Once an transaction output is appended into the TXO MMR, this output is never removed.
+%
+To an extreme extent, individual nodes could only rely on TXO MMR, and as a result, eliminate the issue of unlimited growth of UTXO set.
+%
+What's more, nodes only need to append new data instead of updating TXO set frequently.
+%
+However, the complexity log\(n\) could increase bandwidth overhead inevitably.
+%
+Hence, individual nodes also need to maintain UTXO set for recent transactions and TXO set is only needed when very old coins are spent.
+%
+There are also some optimizations on UTXO and TXO sets.
+
+Even though, there are still some unresolved problems in this proposal as follows:
+
+\begin{itemize}
+  \item \textbf{Incentive for storing less information.} 
+        Incentive mechanism in current blockchain systems actually requires miners to store all information in local database (even in RAM for high competitiveness).
+        In my opinion, transforming all past UTXO history to TXO MMR can't alleviate this issue at all since the growth of TXO set is also unlimited (even faster).
+        If a miner doesn't store TXO set locally, she might lose competitiveness against other miners.
+        In other words, competitive nodes would choose 
+  \item \textbf{Incentive}
+\end{itemize}
+
+
+
+%
+In this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol only for lightweight client.
+%
+
+
+\subsection{Vector Commitment}
 
 \textbf{Goals.} The description goes here.
 
@@ -237,35 +325,9 @@ Guidelines: In this subsection, you should introduce the typical research direct
 
 \textbf{Related work.} The description goes here.
 
-\subsection{Dynamic Searchable Encryption}
-
-\textbf{Goals.} The description goes here.
-
-
-\textbf{Design challenges.} The description goes here.
-
-\textbf{Related work.} The description goes here.
 
 
 
-
-\subsection{Boolean Searchable Encryption}
-
-\textbf{Goals.} The description goes here.
-
-
-\textbf{Design challenges.} The description goes here.
-
-\textbf{Related work.} The description goes here.
-
-\subsection{Any Other Possible Categories}
-
-\textbf{Goals.} The description goes here.
-
-
-\textbf{Design challenges.} The description goes here.
-
-\textbf{Related work.} The description goes here.
 
 \section{Conclusion}
 
