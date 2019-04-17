@@ -273,7 +273,7 @@ Designing new authenticated index structures should consider the following aspec
   To address this issue, we need to allow every miner to update witness freely.
 \end{itemize}
 
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figs/MMR.png}
   \caption{Merkle Mountain Tree}
@@ -303,24 +303,50 @@ However, the complexity log\(n\) could increase bandwidth overhead inevitably.
 %
 Hence, individual nodes also need to maintain UTXO set for recent transactions and TXO set is only needed when very old coins are spent.
 %
-There are also some optimizations on UTXO and TXO sets.
+There are also some optimizations like storage allocation in cache and disk for UTXO and TXO sets.
+%
+As for the generation of TXO/UTXO commitment proofs, anyone could produce and update these proofs without involving signers.
 
 Even though, there are still some unresolved problems in this proposal as follows:
 
 \begin{itemize}
   \item \textbf{Incentive for storing less information.} 
         Incentive mechanism in current blockchain systems actually requires miners to store all information in local database (even in RAM for high competitiveness).
-        In my opinion, transforming all past UTXO history to TXO MMR can't alleviate this issue at all since the growth of TXO set is also unlimited (even faster).
-        If a miner doesn't store TXO set locally, she might lose competitiveness against other miners.
-        In other words, competitive nodes would choose to download all history
-  \item \textbf{Incentive}
+        In my opinion, transforming all past UTXO history to an archived TXO MMR can't alleviate this issue at all since the growth of TXO set is also unlimited.
+        If a miner forgets very old unspent transactions for saving storage, she might lose competitiveness against other miners.
+        In other words, competitive nodes prefer to choose to download and maintain all history.
+  \item \textbf{Increase burden of light node.}
+        Including proofs in transactions requires lightweight nodes to request full nodes for help generate proofs.
+  \item \textbf{High Communication Overhead.}
+        Although TXO set is compressed and less likely to be used, its proof size could be very large in the complexity of log$n$.
 \end{itemize}
 
+In Ethereum research forum, Justin Drake utilizes asynchronous accumulator~\cite{reyzin2016efficient} to construct witnesses. 
+%
+Asynchronous accumulators can provide position binding with low update frequency.
+%
+The main benefits are that nodes only need to update witness logarithmically in the number of events.
+%
+And, further on that, wwe can separate the history and state to construct `dual accumulator' proof.
+%
+As for immutable transaction history, we can utilize non-dynamic asynchronous accumulators for this large set.
+%
+As for changing present transactions, we can still use current Merkle Patricia Tree to keep records.
+%
+Here, an extreme approach is to leverage SNARKs/STARKs on smart contracts to generate efficient proofs for consumptions and non-consumptions. 
 
 
+Separating history and state might be an efficient way to realize stateless blockchain.
 %
-In this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol only for lightweight client.
+However, many critical problems are unresolved in this proposal.
 %
+This approach suffers from the problem of transaction synchronisation since miners might using this contract at the same time.
+%
+Thus, accumulator sharding might be more suitable in this case.
+%
+Same as the proposal of Todd, the witness size is still a big problem.
+
+
 
 
 \subsection{Vector Commitment}
@@ -333,7 +359,9 @@ In this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitm
 \textbf{Related work.} The description goes here.
 
 
-
+%
+In this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol only for lightweight client.
+%
 
 
 \section{Conclusion}
