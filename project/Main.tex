@@ -346,8 +346,94 @@ Thus, accumulator sharding might be more suitable in this case.
 %
 Same as the proposal of Todd, the witness size is still a big problem.
 
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{figs/Edrax-arch.png}
+  \caption{Edrax Architecture}
+  \label{edrax-arch}
+\end{figure}
 
+Based on prior discussions on the forums, several research studies on stateless blockchain have emerged in recent months.
+%
+In Edrax\cite{edrax}, the authors utilizing the methods of verifiable data outsourcing (e.g. authenticated data structure\cite{TKDE:auth-aggregate-queries,SIGMOD18:auth-access-control} and vector commitment\cite{catalano2013vector}) to support stateless transaction validation.
+%
+In this part, we focus on authenticated data structure used to support UTXO model.
+%
+As shown in Figure~\ref{edrax-arch}, Edrax requires issuers of transactions to attach local proofs and clients to synchronize their local proofs for each new block.
 
+In UTXO model, full nodes validate the new transactions by maintaining a set of unspent transaction outputs.
+%
+Here, they utilize \textit{sparse} Merkle Tree of $2^W$ leaves to represent UTXO set. 
+%
+In order to verify the correctness of the transactions, nodes need to check that input coins belong to this set.
+%
+Operations involved in validating process include removing old coins and inserting new coins.
+%
+The \textit{i}-th leaf node would store the output of \textit{i}-th transaction.
+%
+And they set the value to be \textit{null} to denote deletion of the coin.
+%
+In hash-based accumulator, root hash could be used for validation digest and Merkle tree proofs are used as local proofs.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{figs/sparse.png}
+  \caption{Sparse Merkle Tree}
+  \label{sparse}
+\end{figure}
+
+In Figure~\ref{sparse}, we represent a record in \textit{sparse} Merkle Tree in the form of ($i$,[$pk$,$v$]), where $i$ is an increasing counter number to label the output transaction, $pk$ is a public key and the value of spent coins $v$. 
+%
+\textit{Validation Digest} (the root hash of \textit{sparse} Merkle Tree) is required to be appended into each block.
+%
+And the local proof $\pi$ for each transaction should be updated to the newest.
+%
+As for clients, spending a transaction output ($x$,[$pk$,$v$]) needs to contain her public key \texttt{PK} and a local proof $\pi$ for this transaction.
+%
+As for miners, they need to check two constraints for a valid block.
+%
+Firstly, they need to use public key \texttt{PK} to check the validity of its signature $sig$.
+%
+Secondly, they need to ensure that all inputs of transactions are unspent by checking the local proof.
+%
+Since transactions need uncertain time to be confirmed and new blocks can be generated during that time, we need to allow every miner to update this local proof without issuers.
+%
+For simplification, we omit the detailed algorithm here.
+
+Instead of enforcing full nodes to maintain the whole ledger, this method reduce the validation cost by requiring clients to maintain local proofs for own coins.
+%
+Same as the methods before, the witness size is on the complexity of log$n$ where n is the number of all unspent coins in history.
+%
+One optimization here is to use more efficient authenticated data structure such as authenticated red-black tree to replace \textit{sparse} Merkle Tree.
+%
+As for account-based model (e.g. Ethereum), the authors utilize vector commitment to provide position binding proofs. 
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\linewidth]{figs/sharding.png}
+  \caption{An illustration of Vault sharding}
+  \label{sharding}
+\end{figure}
+
+There is little targeted optimization for hash-based accumulator in Edrax.
+%
+Another work called Vault~\cite{vault}, recently published in NDSS, put forwards many special optimizations for authenticated data structure and Algorand.
+%
+In particular, to the problem of empty accounts in Ethereum, they put forward a scheme of transaction expiration.
+%
+By setting the time window for each transaction, we don't need to track nonce of each account and can delete empty accounts safely.
+%
+Enforcing transactions to expire means that, if a transaction can't be confirmed before it expires (e.g. might because few transaction fees), the issuer must resign this transaction again.
+%
+For users, they can confirm whether their transactions are accept finally after the expiration.
+
+Same as Edrax, vault also adopts \textit{sparse} Merkle tree to store the account sets.
+%
+Considering the communication overhead, vault requires nodes to locally store the merkle tree frontier which is an intermediate layer in Figure~\ref{sharding}.
+%
+Thus, transactions could only include subtree proofs that prove the Merkle Tree branch starting from the middle nodes instead of root nodes.
+%
+It is in fact a trade-off between the storage and frontier depth.
 
 \subsection{Vector Commitment}
 
