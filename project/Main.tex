@@ -68,14 +68,21 @@ How to leverage these tools to realize a cryptocurrency protocol is a challengin
 
 With these unresolved problems, I conduct an investigation into state-of-the-art solutions of stateless blockchain in this paper.
 %
-By categorizing existing literatures, I
+By categorizing existing literatures, I provide the state-of-the-art solutions of stateless blockchain.
 %
-I then pick up some important literatures and explain their algorithms in more detail.
+I then pick up some important literatures and analyze their pros and cons in more detail.
 %
-By providing comprehensive evaluations for these methods, 
+By providing comprehensive evaluations for these methods, I also provide some possible research directions on it.
 
-The rest of this paper is organized as follows: 
-
+The rest of this paper is organized as follows: the second paragraph provides a view of current blockchain system architecture and the history of stateless blockchain.
+%
+Then I introduce the underlying mechanism of data storage and validating transactions in Ethereum in section 3.
+%
+In section 4, I summarize the current studies on stateless blockchain.
+%
+The section 5 gives an extension version of stateless blockchain in lightweight client.
+%
+And the final section concludes the paper and lists some possible directions.
 
 \begin{figure}[t]
   \centering
@@ -182,6 +189,13 @@ As illustrated in Figure~\ref{e-trie}, The hash roots of first three merkle patr
 %
 The hash root of \textit{Storage Tree} is included in \textit{State Tree} with its RLP encoded data records.
 
+\begin{figure*}
+  \centering
+  \includegraphics[width=\linewidth]{figs/summary.png}
+  \caption{Comparison of cryptocurrency models}
+  \label{compare}
+\end{figure*}
+
 In more detail, \textit{Transaction Trie} is proposed to record transactions in the current block.
 %
 Thus, once the block is appended into the main chain, \textit{Transaction Trie} is also fixed and never updated.
@@ -202,6 +216,7 @@ Because Ethereum leverages smart contract to achieve reliable computation in an 
 %
 Ethereum introduces contract accounts to manage these contracts and each contract account has a separate storage trie for that.
 
+
 \subsection{Data Storage in Lightweight Node}
 In practice, many devices with limited computing resources and storage space can't run as a full node.
 %
@@ -221,6 +236,7 @@ In general, block headers contain enough information to assure that
 It is worth nothing that block depth is totally opposite to block height and corresponds to the cumulative difficulty originated from the genesis block.
 %
 Once SPV client retrieves merkle branch and validates the existence of transaction in a block, she can only rely on the consensus mechanism for the security assurance. 
+
 
 
 \section{Research Directions of Stateless Blockchain}
@@ -410,6 +426,13 @@ As for account-based model (e.g. Ethereum), the authors utilize vector commitmen
 
 \begin{figure}[!ht]
   \centering
+  \includegraphics[width=\linewidth]{figs/skip-block.png}
+  \caption{Protocol for skipping blocks}
+  \label{skippping}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
   \includegraphics[width=\linewidth]{figs/sharding.png}
   \caption{An illustration of Vault sharding}
   \label{sharding}
@@ -436,23 +459,146 @@ Thus, transactions could only include subtree proofs that prove the Merkle Tree 
 It is in fact a trade-off between the storage and frontier depth.
 
 \subsection{Vector Commitment}
+ 
+\textbf{Goals.} Same as hash-based accumulator, vector commitment can also provide proofs for position binding.
 
-\textbf{Goals.} The description goes here.
-
-
-\textbf{Design challenges.} The description goes here.
-
-\textbf{Related work.} The description goes here.
-
-
+\textbf{Background.}
+The approaches of Merkle tree can't be applied into account-based model directly because single local proof for one account can't update account information of sender and receiver.
 %
-In this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol only for lightweight client.
+Considering the following case:
 %
+Suppose that Alice has $t_A$ coins and Bob has $t_B$ coins.
+%
+If Alice wants to transfer her 5 coins to Bob, she can just broadcast a new transaction along with her local proof.
+%
+To validate the correctness of her transaction, miners need to check whether her balance is larger than 5 ($t_A \geq 5$) using her local proof.
+%
+Once miners confirm the validation of this transaction, they need to utilize this witness to update validation digest in the block header to reflect the balance change.
+%
+Updating Alice's balance is very easy since Alice has attached her witness in the transaction.
+%
+However, updating Bob's balance is impossible because miners don't maintain the global ledger state any more and transactions doesn't contain receiver's local proof.
+%
+And involving Bob in the issuance of new transaction violates the design principle of cryptocurrency.
+%
+To tackle this problem, Edrax leverages \textit{algebraic vector commitment} to replace tree-based accumulator.
 
+\textbf{Design challenges.} 
+in this setting, a new vector commitment scheme need to be constructed considering the following perspectives:
+\begin{itemize}
+  \item \textbf{Represent vectors in a succinct form.}
+  \item \textbf{Update proof efficiently.}
+  \item \textbf{Proof size and key size shouldn't be large.}
+\end{itemize}
+
+\textbf{Related work.}
+There are many literature studies on vector commitment.
+%
+For verifiable computation, Yupeng Zhang et al. utilizes multilinear extension to represent vectors in a succinct manner.
+%
+However, they don't present an efficient proof updating algorithm.
+%
+Other vector commitment suitable to Edrax could be two-fold:
+%
+One uses elliptic curve cryptography (ECC) to construct vector commitment.
+%
+Another is based on RSA cryptography.
+%
+Both of these methods suffer from the large key size or slow updating time.
+
+In this paper, I will briefly introduce the secure vector commitment scheme in Edrax and key components in it.
+
+\textit{Setup Phase.}
+Here, given an upper bound n (the total number of accounts in Edrax) and a secure parameter $\lambda$, running \texttt{KeyGen}($1^{\lambda}$,$n$) could generate prover key $prk$, verification key $vrk$ and update key $upk_i$
+%
+These security parameters could be hardcoded into the client side.
+%
+To forbid the risk of trapdoor attacks, Edrax can employ multi-party computation to set up.
+
+\textit{Validation Digest.}
+In order to validate the transactions, each block should contain two values in the block header. 
+%
+The first is account digest $\texttt{digest}_t$. 
+%
+Just like the root hash of Merkle tree, $\texttt{digest}_t$ also records the balance of all accounts.
+%
+The second is counter number of accounts $\texttt{cnt}_t$. 
+%
+This value represents the total number of accounts in Edrax.
+
+\textit{Client Side.}
+In client side, users need to create a new account and spend money.
+%
+For creating a new account, user needs to generate a pair of public and private key firstly.
+%
+Then she can issue a \texttt{Init} transaction to map her account into next number.
+
+As for spending money, Edrax offers \texttt{Spend} transaction for users. 
+%
+In order to send this transaction, sender should contain her public key, receiver's public key, payment amount, local proof and sender's balance.
+
+\textit{Miners}
+As for the creation of new blocks, miner need to check three constraints:
+
+\begin{itemize}
+  \item Check whether signature is corresponding to the public key $pk$
+  \item Check this account could afford this payment amount
+  \item Check the correctness of local proof
+\end{itemize}
+
+After generating a new block, miners need to update the validation digest in the block header.
+%
+Edrax provides \texttt{UpdateDigest} algorithm to update sender's and receiver's balance.
+%
+Updating witness in block header means that participants in the network need to synchronize the validation digest.
+%
+It actually increases the burden of lightweight clients and increase the communication overhead in the network.
+
+\textit{Analysis}
+Public key size is too large. 
+%
+In Edrax, since the upper number $n$ is hardcoded into each client, we need to set $n$ to be large enough.
+%
+It is unknown that how clients get initial proof $\pi$ during \texttt{Init} transaction in the stateless blockchain.
+
+
+\section{Extension of stateless blockchain}
+Stateless blockchain is proposed for reducing the data storage of miners.
+%
+To further extend this concept, we even think of how to build a `stateless' lightweight node. 
+%
+Currently, lightweight nodes need to store the block headers to validate the consensus proof.
+%
+In general, the storage is linear with the total number of blocks.\
+%
+In Bitcoin, this is not a problem because new blocks are generated for 10$\sim$15 minutes and the size of each block header is only 80 bytes.
+%
+But Ethereum generates a new block only for 10$\sim$12 second and the block header size is 508 bytes (much larger than ones in Bitcoin).
+%
+SPV client in Ethereum needs to download 3.6 GB of data to confirm the consensus of the whole network.
+%
+Thus, a reasonable stateless SPV client is need in Ethereum. 
+
+Kiayias et al. once proposed a method called non-interactive proof of proof-of-work (NPPoPoW).
+%
+In this way, lightweight client only needs to store a polylogarithmic number of block headers.
+%
+However, it suffers from the facts including ideal model (no adversaries) and only limited in proof-of-work system.
+%
+In order to overcome above drawbacks, in this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol called flyclient.
+%
+What's more, flyclient also has a smaller proof size of all parameters.
 
 \section{Conclusion}
-
-The conclusion goes here.
+As for stateless blockchain, both authenticated data structure and vector commitment are possible solutions.
+%
+And both of these methods suffer from the witness size in the block header.
+%
+In order to design an efficient and reasonable protocol, local proof synchronisation is a critical part.
+%
+What's more, current studies can't support smart contracts in the stateless settings.
+%
+Leveraging SNARKs in blockchain could help miners, even every node, validate transactions faster and achieve fast bootstrapping.
 
 
 \bibliographystyle{IEEEtran}
