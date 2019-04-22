@@ -24,11 +24,11 @@
 \section{Introduction}
 
 \begin{frame}{Background}
-  \begin{itemize}[<+->]
+  \begin{itemize}
     \item In cryptocurrency, peer-to-peer payment transactions are asynchronously broadcasted and recorded in an ordered ledger.
     \item Consensus protocol requires nodes to validate new transactions. 
     \item e.g. To send 6 ETC from Alice to Bob requires that Alice has at least 6 ETC.
-    \item Simply querying the history from adjacent nodes is infeasible and insecure due to the large size of blocks.
+    \item Simply querying the history on the blockchain is infeasible and insecure due to the large size of blocks.
     \item For that reason, most cryptocurrency nodes need to locally maintain the \alert{validation state}, which means downloading all past transactions/accounts.
   \end{itemize}
 \end{frame}
@@ -78,13 +78,12 @@
        \item Increase the possibility of centralization in blockchains.
     \end{itemize}
     \item Several people including Peter Todd and Mike Hearn also talked about \alert{storageless clients} for Bitcoin in 2013.
-    \item It thus appears that we need to compress the \alert{ledger history} or allow miners to validate pending transactions without storing all past blocks. 
+    \item It thus appears that we need to compress the \alert{ledger history}.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Difficulty}
   \begin{itemize}
-    \item Currently the maximum size of the UTXO/Account set is unbounded as there is no consensus rule that limits growth.
     \item State set growth is driven by a number of factors, including the following fact.
      \begin{itemize}
        \item For \alert{Bitcoin}, there are massive of merge inputs, lost coins and dust outputs.
@@ -128,13 +127,20 @@
 \section{Stateless Blockchain}
 
 \begin{frame}{Stateless Blockchain}
-  \begin{itemize}[<+->]
+  \begin{itemize}
    \item This design concept of \alert{Stateless Blockchain} is referred to Peter Todd's blog post~\cite{Tod}. 
    \item Nodes might participate in transaction validation without storing the entire state of the ledger.
    \item Transaction would include membership proofs for all its input.
    \item A node would only need to store the current state and verify transactions by checking membership proofs against accumulator state.
-   \item Many optimized schemes are put forward in the forum, such as Merkle Mountain tree~\cite{MMR} and asynchronous accumulator~\cite{reyzin2016efficient} for dual accumulator.
+   \item Many optimized schemes are put forward in the forum, such as TXO commitment~\cite{MMR} and asynchronous accumulator~\cite{reyzin2016efficient} for dual accumulator.
  \end{itemize}
+\end{frame}
+
+\begin{frame}{Architecture}
+  \begin{figure}
+    \includegraphics[width=0.6\linewidth]{figs/Edrax-arch.png}
+    \caption{System Architecture}
+  \end{figure}
 \end{frame}
 
 \metroset{subsectionpage=simple}
@@ -176,7 +182,7 @@
     \includegraphics[width=0.5\linewidth]{figs/vault-sharding.png}
   \end{figure}
   \vspace{-2em}
-  \begin{itemize}[<+->]
+  \begin{itemize}
     \item \textbf{Shard Witness:} Transactions include Merkle witness for source and destination accounts.
     \item \textbf{Updating Witness:} The witness could be updated without requiring the issuer to resign the entire transaction.
     \item \textbf{Adaptive Sharding: } Truncating witness.
@@ -184,7 +190,7 @@
 \end{frame}
 
 \begin{frame}{Vault: Compressing History}
-  \begin{itemize}[<+->]
+  \begin{itemize}
     \item Skipping Blocks
     \begin{figure}
       \includegraphics[width=0.5\linewidth]{figs/skip-block.png}
@@ -196,15 +202,10 @@
 
 \subsection{\fullcite{chepurnoy2018edrax}}
 
-\begin{frame}{EDRAX Architecture}
-  \begin{figure}
-    \includegraphics[width=0.6\linewidth]{figs/Edrax-arch.png}
-    \caption{Edrax System Architecture}
-  \end{figure}
-\end{frame}
+
 
 \begin{frame}{General Idea}
-  \begin{itemize}[<+->]
+  \begin{itemize}
     \item Represent UTXO as a sparse Merkle tree.
     \item For account-based model, we can use MHT to represent the mapping of $pk \leftrightarrow balance$
     \item Store the MHT root in the block as digest
@@ -222,7 +223,6 @@
           \item A vector commitment digest whose mapping is $i \leftrightarrow h(\textsf{PK}) || balance$
           \item A counter $cnt_t$ which indicates the number of existing accounts
         \end{itemize}
-      \item Each client has a public key in the form $\textsf{PK} = pk || i || upk_i$
       \item Clients store vector commitment proof $\pi$ w.r.t.\ their index $i$
       \item The index $i$ is assigned when client submits an \alert{\texttt{INIT} transaction} $[\texttt{INIT}, pk]$
         \begin{itemize}
@@ -256,8 +256,8 @@
 
 \begin{frame}{Discussion}
   \begin{itemize}[<+->]
-    \item Either dynamic accumulator or vector commitment provides a \alert{short binding commitment} to a set of elements together with short \alert{membership/non-membership proof}.
-    \item In essence, stateless blockchain reduces the storage burden for performing transaction validation by \alert{sacrificing communication overhead}.
+    \item Either authenticated data structure or vector commitment provides a \alert{short binding commitment} to a set of elements together with short \alert{membership/non-membership proof}.
+    \item In essence, stateless blockchain reduces the storage burden for performing transaction validation by \alert{sacrificing communication overhead and assigning miners' tasks to clients}.
     \item Possible optimizations: 
      \begin{itemize}[<+->]
        \item Shorten membership proof size
