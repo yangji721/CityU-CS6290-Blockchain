@@ -77,8 +77,7 @@
        \item DoS attack (adversarially-crafted transactions that need massive of disk accesses)
        \item Increase the possibility of centralization in blockchains.
     \end{itemize}
-    \item Several people including Peter Todd and Mike Hearn also talked about \alert{storageless clients} for Bitcoin in 2013.
-    \item It thus appears that we need to compress the \alert{ledger history}.
+    \item Several developers also talked about \alert{storageless clients} for Bitcoin in 2013.
   \end{itemize}
 \end{frame}
 
@@ -214,26 +213,27 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Edrax in account-based model}
-  \vspace{-2em}
-  \begin{itemize}
-    \item Edrax requires an \alert{one-time setup phase}. 
-      \item Each block stores a validation digest
-        \begin{itemize}
-          \item A vector commitment digest whose mapping is $i \leftrightarrow h(\textsf{PK}) || balance$
-          \item A counter $cnt_t$ which indicates the number of existing accounts
-        \end{itemize}
-      \item Clients store vector commitment proof $\pi$ w.r.t.\ their index $i$
-      \item The index $i$ is assigned when client submits an \alert{\texttt{INIT} transaction} $[\texttt{INIT}, pk]$
-        \begin{itemize}
-          \item Miner verifies transaction signature
-          \item Client is assigned to $i \gets cnt_t$
-          \item Miner updates $cnt_{t+1} \gets cnt_t + 1$ and a new digest \\
-            $\textsf{UpdateDigest}(dig, cnt, h(\textsf{PK}) || 0, upk_{cnt})$
-          \item Clients synchronize proofs accordingly using UpdateProof
-        \end{itemize}
-  \end{itemize}
-\end{frame}
+%%
+%\begin{frame}{Edrax in account-based model}
+%  \vspace{-2em}
+%  \begin{itemize}
+%    \item Edrax requires an \alert{one-time setup phase}. 
+%      \item Each block stores a validation digest
+%        \begin{itemize}
+%          \item A vector commitment digest whose mapping is $i \leftrightarrow h(\textsf{PK}) || balance$
+%          \item A counter $cnt_t$ which indicates the number of existing accounts
+%        \end{itemize}
+%      \item Clients store vector commitment proof $\pi$ w.r.t.\ their index $i$
+%      \item The index $i$ is assigned when client submits an \alert{\texttt{INIT} transaction} $[\texttt{INIT}, pk]$
+%        \begin{itemize}
+%          \item Miner verifies transaction signature
+%          \item Client is assigned to $i \gets cnt_t$
+%          \item Miner updates $cnt_{t+1} \gets cnt_t + 1$ and a new digest \\
+%            $\textsf{UpdateDigest}(dig, cnt, h(\textsf{PK}) || 0, upk_{cnt})$
+%          \item Clients synchronize proofs accordingly using UpdateProof
+%        \end{itemize}
+%  \end{itemize}
+%\end{frame}
 
 \begin{frame}{\texttt{SPEND} Transaction}
   \begin{itemize}
