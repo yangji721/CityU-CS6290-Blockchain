@@ -13,7 +13,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{An Preliminary Investigation into Stateless Blockchain}
+\title{A Preliminary Investigation into Stateless Blockchain}
 
 \author{
 \IEEEauthorblockN{Yang Ji}
@@ -588,6 +588,23 @@ However, it suffers from the facts including ideal model (no adversaries) and on
 In order to overcome above drawbacks, in this paper\cite{luuflyclient}, the authors adopt merkle mountain tree commitment and propose a probabilistic protocol called flyclient.
 %
 What's more, flyclient also has a smaller proof size of all parameters.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figs/evaluation.png}
+  \caption{Edrax vs stateful validation}
+  \label{Evaluation}
+\end{figure}
+
+\section{Evaluation of Edrax}
+Authors compare the validation time of Edrax with stateful blockchains in UTXO and account-based model.
+%
+Since Edrax sets an upper bound of accounts/UTXO at one time, validation time of Edrax is little worse than the stateful blockchains with small accounts.
+%
+However, when the number of transactions is increasing, validation time of stateful blockchains also increases linearly.
+%
+Thanks to the attached proof, miners can still validate this transaction in a nearly constant time. 
+
 
 \section{Conclusion}
 As for stateless blockchain, both authenticated data structure and vector commitment are possible solutions.
